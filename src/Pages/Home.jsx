@@ -144,6 +144,7 @@ const Home = () => {
   ]);
 
   const [link, setLink] = useState("https://otakudesu.cloud/");
+  const [veiwOngoing, setViewOngoing] = useState(true);
 
   const handleLink = (link) => {
     alert(link);
@@ -210,7 +211,6 @@ const Home = () => {
         </span>
         {/* END MOVIE */}
       </div>
-      <Bottom />
     </>
   );
 };
