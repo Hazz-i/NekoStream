@@ -1,9 +1,13 @@
-import { Button } from "@/components/ui/button";
+import { ThemeProvider } from "@/components/theme-providers";
+import Home from "@/Pages/Home";
+import "boxicons";
 
 export default function App() {
   return (
-    <>
-      <Button>Click me</Button>
-    </>
+    <ThemeProvider
+      defaultTheme="dark"
+      storageKey="vite-ui-theme">
+      <Home />
+    </ThemeProvider>
   );
 }

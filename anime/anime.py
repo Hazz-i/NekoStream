@@ -33,7 +33,9 @@ def scrape_anime_data(url):
                     logging.warning(f"Couldn't find 'anime-detpost' div in entry")
                     continue
 
-                date_release = elem.find('div', class_='epztipe').text.strip()
+                day_release = elem.find('div', class_='epztipe').text.strip()
+                date_release = elem.find('div', class_='newnime').text.strip()
+                episode = elem.find('div', class_='epz').text.strip()
 
                 body_elem = elem.find('div', class_='thumb')
                 if not body_elem:
@@ -53,9 +55,11 @@ def scrape_anime_data(url):
                 anime_data.append({
                     'title': title,
                     'link': link,
+                    'episode' : episode,
                     'image_url': img_url,
                     'image_alt': img_alt,
-                    'date_release': date_release
+                    'date_release': date_release,
+                    'day_release': day_release
                 })
             except Exception as e:
                 logging.error(f"Error processing entry: {e}")
