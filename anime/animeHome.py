@@ -9,23 +9,23 @@ def scrape_anime_data(url):
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for bad status codes
-        
+
         soup = BeautifulSoup(response.text, 'html.parser')
-        
-        venz_div = soup.find('div', class_='venz')
-        
-        if not venz_div:
+
+        venzdiv = soup.find('div', class_='venz')
+
+        if not venzdiv:
             logging.warning("Couldn't find div with class 'venz'")
             return None
-        
-        anime_entries = venz_div.find_all('li')
-        
+
+        anime_entries = venzdiv.find_all('li')
+
         if not anime_entries:
             logging.warning("No li elements found within the venz div")
             return None
 
         anime_data = []
-        
+
         for entry in anime_entries:
             try:
                 elem = entry.find('div', class_='detpost')
@@ -64,9 +64,9 @@ def scrape_anime_data(url):
             except Exception as e:
                 logging.error(f"Error processing entry: {e}")
                 continue
-        
+
         return anime_data
-    
+
     except requests.RequestException as e:
         logging.error(f"An error occurred while fetching the page: {e}")
         return None
@@ -83,13 +83,13 @@ def save_to_json(data, filename):
         logging.error(f"An error occurred while saving data to JSON: {e}")
 
 # Usage
-url = 'https://otakudesu.cloud/'
+url = f'https://otakudesu.cloud/'
 
 try:
     data = scrape_anime_data(url)
     if data:
         print(json.dumps(data, ensure_ascii=False, indent=2))
-        
+
         # Save to JSON file
         save_to_json(data, 'anime_list.json')
     else:
