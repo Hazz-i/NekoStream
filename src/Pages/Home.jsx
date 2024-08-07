@@ -3,6 +3,7 @@ import Bottom from "@/components/layout/Bottom";
 import { Card } from "@/components/ui/card";
 
 import { useState } from "react";
+import { NavLink } from "react-router-dom";
 
 const Home = () => {
   const [ongoingAnimes, setOngoingAnimes] = useState([
@@ -155,7 +156,14 @@ const Home = () => {
       <div className="container min-h-[80vh] pt-20 flex flex-col">
         {/* ONGOING */}
         <span className="container bg-gray-900 rounded-lg pb-5">
-          <h1 className="font-bold text-xl py-2">Anime Ongoing</h1>
+          <div className="flex justify-between items-center py-5">
+            <h1 className="font-bold text-xl">Anime Ongoing</h1>
+            <NavLink
+              to={"/ongoing-all"}
+              className={`border-b-2 border-gray-700`}>
+              <small className="text-sm ">Tampilkan Lebih</small>
+            </NavLink>
+          </div>
 
           <div className="flex gap-5 flex-wrap justify-center items-center">
             {ongoingAnimes.map((anime, index) => (
@@ -163,7 +171,7 @@ const Home = () => {
                 class="flex gap-4 max-w-[25rem]"
                 key={index}>
                 {/* CARD */}
-                <button onClick={() => handleLink(anime.link)}>
+                <NavLink to={anime.link}>
                   <Card
                     className="w-[145px] h-[200px] hover:scale-105 transition-all transform duration-300 ease-in-out"
                     style={{
@@ -171,7 +179,7 @@ const Home = () => {
                       backgroundSize: "cover",
                       backgroundPosition: "center",
                     }}></Card>
-                </button>
+                </NavLink>
                 {/* END CARD */}
 
                 {/* CONTENT RIGHT CARD */}
