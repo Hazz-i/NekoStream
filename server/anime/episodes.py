@@ -14,7 +14,7 @@ def extract_info(p_element):
     value = value.replace(':', '').strip()
     return key, value
 
-def scrape_anime_data(url):
+def scrape_anime_episodes(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -90,7 +90,7 @@ def save_to_json(data, filename):
 url = 'https://otakudesu.cloud/anime/yozakura-daisakusen-sub-indo/' 
 
 try:
-    data = scrape_anime_data(url)
+    data = scrape_anime_episodes(url)
     if data:
         print(json.dumps(data, ensure_ascii=False, indent=2))
         

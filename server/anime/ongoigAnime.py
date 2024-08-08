@@ -5,7 +5,7 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
-def scrape_anime_data(url):
+def scrape_ongoing_anime(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
@@ -89,7 +89,7 @@ page = 1
 while True:
     url = f'https://otakudesu.cloud/ongoing-anime/page/{page}/'
     logging.info(f"Scraping page {page}")
-    data = scrape_anime_data(url)
+    data = scrape_ongoing_anime(url)
     
     if data:
         all_anime_data.extend(data)

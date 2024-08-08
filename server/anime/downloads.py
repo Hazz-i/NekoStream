@@ -5,7 +5,7 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
-def scrape_anime_data(url):
+def scrape_anime_downloads(url):
     try:
         response = requests.get(url)
         response.raise_for_status()  # Raise an exception for bad status codes
@@ -76,7 +76,7 @@ def save_to_json(data, filename):
 url = 'https://otakudesu.cloud/episode/ttw-episode-4-sub-indo/' 
 
 try:
-    data = scrape_anime_data(url)
+    data = scrape_anime_downloads(url)
     if data:
         print(json.dumps(data, ensure_ascii=False, indent=2))
         

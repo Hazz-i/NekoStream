@@ -9,10 +9,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { path: "", element: <Navigate to="/home" /> },
-      { path: "/home", element: <Home /> },
-      { path: "/ongoing-all*", element: <Ongoing /> },
-      { path: "/detail", element: <Detail /> },
+      { path: "", element: <Navigate to="/neko-stream/home" /> },
+      { path: "/neko-stream/home", element: <Home /> },
+      { path: "/neko-stream/ongoing-all*", element: <Ongoing /> },
+      { path: "/neko-stream/detail", element: <Detail /> },
     ],
   },
 ]);
