@@ -2,6 +2,7 @@ import { ThemeProvider } from "@/components/theme-providers";
 import Header from "@/components/layout/Header";
 import Bottom from "@/components/layout/Bottom";
 import { Outlet } from "react-router-dom";
+import { ContextProvider } from "@/context/contextProviders";
 
 export default function App() {
   return (
@@ -9,7 +10,9 @@ export default function App() {
       defaultTheme="dark"
       storageKey="vite-ui-theme">
       <Header />
-      <Outlet />
+      <ContextProvider>
+        <Outlet />
+      </ContextProvider>
       <Bottom />
     </ThemeProvider>
   );

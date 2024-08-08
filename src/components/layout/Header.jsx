@@ -8,11 +8,11 @@ import { useEffect, useState } from "react";
 const Header = () => {
   const navList = [
     {
-      to: "/home",
+      to: "/neko-stream/home",
       name: "Home",
     },
     {
-      to: "/genre",
+      to: "/neko-stream/genre",
       name: "Genre",
     },
   ];

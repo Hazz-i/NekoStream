@@ -2,29 +2,24 @@ import Header from "@/components/layout/Header";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-import axiosClient from "@/axios";
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import { useStateContext } from "@/context/contextProviders";
 
 const Home = () => {
+  // CONTEXT PROVIDER
+  const { ongoingHome } = useStateContext();
+
   const [ongoingAnimes, setOngoingAnimes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchAnimesResponse = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosClient.get(`/home`);
-        setOngoingAnimes(response.data.data);
-      } catch (error) {
-        console.error("Error fetching:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    ongoingHome.length == 0 || ongoingHome == undefined ? setIsLoading(true) : setIsLoading(false);
 
-    fetchAnimesResponse();
-  }, []);
+    if (ongoingHome.length > 0) {
+      setOngoingAnimes(ongoingHome);
+    }
+  }, [ongoingHome]);
 
   return (
     <>

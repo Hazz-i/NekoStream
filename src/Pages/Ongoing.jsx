@@ -1,41 +1,31 @@
-import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
 
+import React, { useState, useEffect } from "react";
+import { useStateContext } from "@/context/contextProviders";
 import { NavLink } from "react-router-dom";
-import axiosClient from "@/axios";
 
 const Ongoing = () => {
+  // CONTEXT PROVIDER
+  const { ongoingAll } = useStateContext();
+
   const [ongoingAllAnimes, setOngoingAllAnimes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchAnimesResponse = async () => {
-      try {
-        setIsLoading(true);
-        const response = await axiosClient.get(`/ongoing-all`);
-        setOngoingAllAnimes(response.data.data);
-      } catch (error) {
-        console.error("Error fetching:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    ongoingAll.length == 0 || ongoingAll == undefined ? setIsLoading(true) : setIsLoading(false);
 
-    fetchAnimesResponse();
-  }, []);
+    if (ongoingAll.length > 0) {
+      setOngoingAllAnimes(ongoingAll);
+    }
+  }, [ongoingAll]);
 
   const ITEMS_PER_PAGE = 24;
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Calculate the number of pages needed
   const totalPages = Math.ceil(ongoingAllAnimes.length / ITEMS_PER_PAGE);
-
-  // Get the items for the current page
   const currentItems = ongoingAllAnimes.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
-
-  // Function to handle page changes
   const handlePageChange = (page) => {
     if (page < 1 || page > totalPages) return;
     setCurrentPage(page);
@@ -139,34 +129,36 @@ const Ongoing = () => {
         {/* END ONGOING */}
 
         {/* PAGINATION */}
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                href="#"
-                onClick={() => handlePageChange(currentPage - 1)}
-                className={currentPage === 1 ? "hidden" : ""}
-              />
-            </PaginationItem>
-            {Array.from({ length: totalPages }, (_, index) => (
-              <PaginationItem key={index}>
-                <PaginationLink
+        {!isLoading && (
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
                   href="#"
-                  isActive={index + 1 === currentPage}
-                  onClick={() => handlePageChange(index + 1)}>
-                  {index + 1}
-                </PaginationLink>
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  className={currentPage === 1 ? "hidden" : ""}
+                />
               </PaginationItem>
-            ))}
-            <PaginationItem>
-              <PaginationNext
-                href="#"
-                onClick={() => handlePageChange(currentPage + 1)}
-                className={currentPage === totalPages ? "hidden" : ""}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    href="#"
+                    isActive={index + 1 === currentPage}
+                    onClick={() => handlePageChange(index + 1)}>
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
+              <PaginationItem>
+                <PaginationNext
+                  href="#"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  className={currentPage === totalPages ? "hidden" : ""}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
         {/* END PAGINATION */}
       </div>
     </>
