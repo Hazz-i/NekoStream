@@ -43,7 +43,10 @@ def scrape_ongoing_anime(url):
                     continue
 
                 link_elem = body_elem.find('a')
-                link = link_elem['href'] if link_elem and 'href' in link_elem.attrs else 'No link found'
+                full_link = link_elem['href'] if link_elem and 'href' in link_elem.attrs else 'No link found'
+                cleaned_link = full_link.replace("https://otakudesu.cloud/anime/", "")
+                # Hapus trailing slash
+                link = cleaned_link.rstrip("/")
 
                 title_elem = body_elem.find('h2')
                 title = title_elem.text.strip() if title_elem else 'No title found'

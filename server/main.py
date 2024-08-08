@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
 import logging
-from anime.animeHome import scrape_home_anime
-from anime.ongoigAnime import scrape_ongoing_anime
-from dotenv import load_dotenv
 import os
+
+from anime.animeHome import scrape_home_anime
+from anime.ongoingAnime import scrape_ongoing_anime
+from anime.episodes import scrape_anime_episodes
+from dotenv import load_dotenv
 
 # Load environment variables from .env file
 load_dotenv()
@@ -20,17 +22,7 @@ def home():
         
         if data:
             results = []
-            for item in data:
-                result = {
-                    'title': item.get('title'),    
-                    'link': item.get('link'),
-                    'episode' : item.get('episode'),
-                    'image_url': item.get('image_url'),
-                    'image_alt': item.get('image_alt'),
-                    'date_release': item.get('date_release'),
-                    'day_release': item.get('day_release')
-                }
-                results.append(result)
+            results.extend(data)
             
             return jsonify({'success': "success", 'data': results})
         else:
@@ -66,7 +58,25 @@ def ongoing():
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+    
 
+@app.route('/neko-stream/<anime>/details', methods=['GET'])
+def details(anime):
+    try:
+        url = f"https://otakudesu.cloud/anime/{anime}/"
+        data = scrape_anime_episodes(url)
+        
+        if data:
+            results = []
+            results.extend(data)
+            
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 5000))  # Use the port from .env, or default to 5000

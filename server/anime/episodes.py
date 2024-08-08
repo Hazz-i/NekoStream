@@ -33,18 +33,30 @@ def scrape_anime_episodes(url):
             logging.warning("No p elements found within the infozingle div")
             return None
 
-        anime_data = {}
+        anime_data = []
+        anime_info = {}
 
         for p in anime_description:
             key, value = extract_info(p)
             if key and value:
-                anime_data[key] = value
+                anime_info[key] = value
 
         title_elem = soup.find('h1', class_='entry-title')
         if title_elem:
-            anime_data['Judul'] = title_elem.get_text(strip=True)
+            anime_info['Judul'] = title_elem.get_text(strip=True)
 
         # Scrape episode links and release dates
+        img_link = soup.find('img', class_='attachment-post-thumbnail')
+        if img_link:
+            anime_info['img_link'] = img_link['src']
+
+        #sinopsis
+        synopsis_elem = soup.find('div', class_='sinopc')
+        if synopsis_elem:
+            synopsis = synopsis_elem.find_all('p')
+            all_text = ' '.join([p.get_text(strip=True) for p in synopsis])
+            print(all_text)
+            anime_info['sinopsis'] = all_text
 
         episode_containers = soup.find_all('div', class_='episodelist')
 
@@ -67,8 +79,9 @@ def scrape_anime_episodes(url):
                     episode['release_date'] = None
                     
                 episodes.append(episode)
-                anime_data['episodes'] = episodes
+                anime_info['episodes'] = episodes
 
+        anime_data.append(anime_info)
         return anime_data
     
     except requests.RequestException as e:
