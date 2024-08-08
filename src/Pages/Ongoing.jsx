@@ -1,20 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Pagination, PaginationContent, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from "@/components/ui/pagination";
+import { Skeleton } from "@/components/ui/skeleton";
+
 import { NavLink } from "react-router-dom";
 import axiosClient from "@/axios";
 
 const Ongoing = () => {
   const [ongoingAllAnimes, setOngoingAllAnimes] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchAnimesResponse = async () => {
       try {
+        setIsLoading(true);
         const response = await axiosClient.get(`/ongoing-all`);
         setOngoingAllAnimes(response.data.data);
-        console.log(response.data);
       } catch (error) {
         console.error("Error fetching:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -51,6 +56,45 @@ const Ongoing = () => {
           </div>
 
           <div className="flex gap-5 flex-wrap justify-center items-center">
+            {/* SEKELETON */}
+            <div className="flex gap-5 flex-wrap justify-center items-center">
+              {isLoading &&
+                Array.from({ length: 12 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="flex flex-col space-y-3">
+                    <span className="flex gap-4 max-w-[25rem]">
+                      {/* CARD */}
+                      <Skeleton className="w-[145px] h-[200px] rounded-xl" />
+                      {/* END CARD */}
+
+                      {/* CONTENT RIGHT CARD */}
+                      <div className="text-wrap max-w-[250px]">
+                        <h1 className="font-semibold mb-10">
+                          <Skeleton className="h-4 w-[250px]" />
+                        </h1>
+                        <span className="flex flex-col gap-2">
+                          <Skeleton className="h-4 w-[250px]" />
+                          <Skeleton className="h-4 w-[200px]" />
+                          <Skeleton className="h-4 w-[200px]" />
+                          <Skeleton className="h-4 w-[200px]" />
+                        </span>
+                        <ul className="flex items-center justify-start gap-3 mt-5">
+                          <li className="flex items-center justify-center">
+                            <Skeleton className="h-4 w-[50px]" />
+                          </li>
+                          <li className="flex gap-1 items-center justify-center">
+                            <Skeleton className="h-4 w-[50px]" />
+                          </li>
+                        </ul>
+                      </div>
+                      {/*END CONTENT RIGHT CARD */}
+                    </span>
+                  </div>
+                ))}
+            </div>
+            {/* END SEKELETON */}
+
             {currentItems.map((anime, index) => (
               <span
                 className="flex gap-4 max-w-[25rem]"
