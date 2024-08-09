@@ -86,16 +86,16 @@ def save_to_json(data, filename):
         logging.error(f"An error occurred while saving data to JSON: {e}")
 
 # Usage
-url = f'https://otakudesu.cloud/'
+# url = f'https://otakudesu.cloud/'
 
-try:
-    data = scrape_home_anime(url)
-    if data:
-        print(json.dumps(data, ensure_ascii=False, indent=2))
+# try:
+#     data = scrape_home_anime(url)
+#     if data:
+#         print(json.dumps(data, ensure_ascii=False, indent=2))
 
-        # Save to JSON file
-        save_to_json(data, 'anime_list.json')
-    else:
-        print("No data was scraped.")
-except Exception as e:
-    logging.error(f"An error occurred: {e}")
+#         # Save to JSON file
+#         save_to_json(data, 'anime_list.json')
+#     else:
+#         print("No data was scraped.")
+# except Exception as e:
+#     logging.error(f"An error occurred: {e}")

@@ -6,6 +6,8 @@ import os
 from anime.animeHome import scrape_home_anime
 from anime.ongoingAnime import scrape_ongoing_anime
 from anime.episodes import scrape_anime_episodes
+from anime.players import scrape_anime_players
+from anime.downloads import scrape_anime_downloads
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -65,6 +67,55 @@ def details(anime):
     try:
         url = f"https://otakudesu.cloud/anime/{anime}/"
         data = scrape_anime_episodes(url)
+        
+        if data:
+            results = []
+            results.extend(data)
+            
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+    
+
+@app.route('/neko-stream/<anime>/<episode>', methods=['GET'])
+def players(anime, episode):
+    try:
+        # Validate parameters
+        if not anime or not episode:
+            return jsonify({'success': "fail", 'message': "Invalid parameters."}), 400
+
+        url = f"https://otakudesu.cloud/episode/{episode}/"
+        
+        # Log the URL being accessed
+        logging.info(f"Accessing URL: {url}")
+
+        data = scrape_anime_players(url)
+        
+        if data:
+            results = []
+            results.extend(data)
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        # Log the error with traceback for better debugging
+        logging.error(f"An error occurred: {e}", exc_info=True)
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+
+    
+@app.route('/neko-stream/<anime>/<episode>/downloads', methods=['GET'])
+def downloads(anime, episode):
+    try:
+        if not anime or not episode:
+            return jsonify({'success': "fail", 'message': "Invalid parameters."}), 400
+
+        url = f"https://otakudesu.cloud/episode/{episode}/"
+        data = scrape_anime_downloads(url)
         
         if data:
             results = []

@@ -90,7 +90,7 @@ const Ongoing = () => {
                 className="flex gap-4 max-w-[25rem]"
                 key={index}>
                 {/* CARD */}
-                <NavLink to={`/neko-stream/detail/${anime.link}`}>
+                <NavLink to={`/neko-stream/detail/${anime.link}/${anime.episode}`}>
                   <Card
                     className="w-[145px] h-[200px] hover:scale-105 transition-all transform duration-300 ease-in-out"
                     style={{

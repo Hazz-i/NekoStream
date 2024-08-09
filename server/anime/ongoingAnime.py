@@ -86,23 +86,23 @@ def save_to_json(data, filename):
         logging.error(f"An error occurred while saving data to JSON: {e}")
 
 # Usage
-all_anime_data = []
-page = 1
+# all_anime_data = []
+# page = 1
 
-while True:
-    url = f'https://otakudesu.cloud/ongoing-anime/page/{page}/'
-    logging.info(f"Scraping page {page}")
-    data = scrape_ongoing_anime(url)
+# while True:
+#     url = f'https://otakudesu.cloud/ongoing-anime/page/{page}/'
+#     logging.info(f"Scraping page {page}")
+#     data = scrape_ongoing_anime(url)
     
-    if data:
-        all_anime_data.extend(data)
-        page += 1
-    else:
-        logging.info(f"No more data found on page {page}. Stopping.")
-        break
+#     if data:
+#         all_anime_data.extend(data)
+#         page += 1
+#     else:
+#         logging.info(f"No more data found on page {page}. Stopping.")
+#         break
 
-if all_anime_data:
-    logging.info(f"Total anime entries scraped: {len(all_anime_data)}")
-    save_to_json(all_anime_data, 'all_ongoing_anime.json')
-else:
-    logging.warning("No data was scraped.")
+# if all_anime_data:
+#     logging.info(f"Total anime entries scraped: {len(all_anime_data)}")
+#     save_to_json(all_anime_data, 'all_ongoing_anime.json')
+# else:
+#     logging.warning("No data was scraped.")

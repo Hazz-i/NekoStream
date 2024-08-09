@@ -60,16 +60,18 @@ def scrape_anime_episodes(url):
 
         episode_containers = soup.find_all('div', class_='episodelist')
 
-        for container in episode_containers:
+        episodes = []
 
+        for container in episode_containers:
             episode_links = container.find_all('a')
-            episodes = []
+            total_episodes = len(episode_links)
             date_index = 0
 
-            for link in episode_links:
+            for index,link in enumerate(episode_links, start=1) :
                 episode = {}
                 episode['link'] = link['href']
-                episode['title'] = link.get_text(strip=True)
+                episode_number = total_episodes - index + 1
+                episode['title'] = f"Episode {episode_number}"
 
                 dates = container.find_all('span', class_='zeebr')
                 if dates and date_index < len(dates):
@@ -77,10 +79,10 @@ def scrape_anime_episodes(url):
                     date_index += 1
                 else:
                     episode['release_date'] = None
-                    
+
                 episodes.append(episode)
                 anime_info['episodes'] = episodes
-
+        
         anime_data.append(anime_info)
         return anime_data
     
@@ -100,16 +102,16 @@ def save_to_json(data, filename):
         logging.error(f"An error occurred while saving data to JSON: {e}")
 
 # Usage
-url = 'https://otakudesu.cloud/anime/yozakura-daisakusen-sub-indo/' 
+# url = 'https://otakudesu.cloud/anime/yozakura-daisakusen-sub-indo/' 
 
-try:
-    data = scrape_anime_episodes(url)
-    if data:
-        print(json.dumps(data, ensure_ascii=False, indent=2))
+# try:
+#     data = scrape_anime_episodes(url)
+#     if data:
+#         print(json.dumps(data, ensure_ascii=False, indent=2))
         
-        # Save to JSON file
-        save_to_json(data, 'anime_info.json')
-    else:
-        print("No data was scraped.")
-except Exception as e:
-    logging.error(f"An error occurred: {e}")
+#         # Save to JSON file
+#         save_to_json(data, 'anime_info.json')
+#     else:
+#         print("No data was scraped.")
+# except Exception as e:
+#     logging.error(f"An error occurred: {e}")

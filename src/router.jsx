@@ -12,7 +12,7 @@ const router = createBrowserRouter([
       { path: "", element: <Navigate to="/neko-stream/home" /> },
       { path: "/neko-stream/home", element: <Home /> },
       { path: "/neko-stream/ongoing-all*", element: <Ongoing /> },
-      { path: "/neko-stream/detail/:title", element: <Detail /> },
+      { path: "/neko-stream/detail/:title/:episode", element: <Detail /> },
     ],
   },
 ]);

@@ -4,3 +4,4 @@ venv/
 
 #Ignore all .json files
 *.json
+.local/
