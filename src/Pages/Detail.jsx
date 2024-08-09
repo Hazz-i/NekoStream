@@ -11,6 +11,7 @@ const Details = () => {
   const [animeDetails, setAnimeDetails] = useState([]);
   const [episodes, setEpisodes] = useState([]);
   const [isPlaying, setIsPlaying] = useState([]);
+  const [downloads, setDownloads] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isWhaching, setIsWhaching] = useState(false);
@@ -62,6 +63,16 @@ const Details = () => {
       }
     };
 
+    const fetchDownloads = async () => {
+      try {
+        const response = await axiosClient.get(`/${title}/${episodeSelectedLink}/downloads`);
+        setDownloads(response.data.data);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    fetchDownloads();
     fetchEpisode();
   }, [episodeSelectedLink]);
 
@@ -160,7 +171,7 @@ const Details = () => {
               {/* END SINOPSIS */}
             </div>
 
-            {/* CHARACTERS */}
+            {/* CHAPTERS */}
             <div className="w-3/4">
               <h2 className="text-lg font-bold">Episode &nbsp;:</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-5 py-5">
@@ -175,6 +186,7 @@ const Details = () => {
                 ))}
               </div>
             </div>
+            {/* END CHAPTERS */}
           </span>
         ))}
         {/* END DETAILS */}
@@ -199,9 +211,7 @@ const Details = () => {
                     src={isPlaying[0]?.link}
                     className="w-full h-[30rem]"
                     allowFullScreen
-                    title="Video Player">
-                    ini contoh
-                  </iframe>
+                    title="Video Player"></iframe>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
@@ -253,8 +263,112 @@ const Details = () => {
         {/* END PLAYER */}
 
         {/* DOWNLOADS */}
+        {!isLoading && !isWhaching && (
+          <>
+            <div className="text-start w-[55rem] font-bold text-lg">
+              <h1>Link Downloads:</h1>
+            </div>
 
-        {/* END DOWNLOADS */}
+            {/* MP 4 */}
+            <span className="w-[55rem] bg-gray-900 rounded-lg grid gap-5 py-5">
+              <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
+                <span className="font-bold">Mp 4</span>
+              </h1>
+
+              <div className="flex items-center justify-around">
+                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                  <h1>360p</h1>
+                </span>
+                <ul className="flex items-center justify-center gap-3">
+                  {downloads
+                    .filter((download) => download.type === "Mp4 360p")
+                    .map((download, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-5 rounded-sm text-center border-2">
+                        <a href={download.link}>{download.platform}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+              <div className="flex items-center justify-around">
+                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                  <h1>480p</h1>
+                </span>
+                <ul className="flex items-center justify-center gap-3">
+                  {downloads
+                    .filter((download) => download.type === "Mp4 480p")
+                    .map((download, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-5 rounded-sm text-center border-2">
+                        <a href={download.link}>{download.platform}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+              <div className="flex items-center justify-around">
+                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                  <h1>720p</h1>
+                </span>
+                <ul className="flex items-center justify-center gap-3">
+                  {downloads
+                    .filter((download) => download.type === "Mp4 720p")
+                    .map((download, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-5 rounded-sm text-center border-2">
+                        <a href={download.link}>{download.platform}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+              {/* END MP 4 */}
+
+              {/* MKV */}
+              <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
+                <span className="font-bold">MKV</span>
+              </h1>
+
+              <div className="flex items-center justify-around">
+                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                  <h1>480p</h1>
+                </span>
+                <ul className="flex items-center justify-center gap-3">
+                  {downloads
+                    .filter((download) => download.type === "MKV 480p")
+                    .map((download, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-5 rounded-sm text-center border-2">
+                        <a href={download.link}>{download.platform}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+
+              <div className="flex items-center justify-around">
+                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                  <h1>720p</h1>
+                </span>
+                <ul className="flex items-center justify-center gap-3">
+                  {downloads
+                    .filter((download) => download.type === "MKV 720p")
+                    .map((download, index) => (
+                      <li
+                        key={index}
+                        className="py-2 px-5 rounded-sm text-center border-2">
+                        <a href={download.link}>{download.platform}</a>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            </span>
+            {/* END MKV */}
+          </>
+        )}
       </div>
     </>
   );
