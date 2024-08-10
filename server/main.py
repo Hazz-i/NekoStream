@@ -28,7 +28,7 @@ def home():
         anime_list = "https://myanimelist.net/"
         top_anime_list = scrape_top_anime_list(anime_list)
         
-        if anime_data or movie_data:
+        if anime_data or anime_batch_data or top_anime_list:
             results = {
                 'anime': anime_data if anime_data else [],
                 'batch': anime_batch_data if anime_batch_data else [],
