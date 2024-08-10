@@ -38,46 +38,27 @@ yarn dev
 
 ## DEMO
 
-<div className="grid gap-5 px-5">
-  <span className="flex flex-col gap-1">
-    Home:
+<div className="grid gap-2 px-5">
     <img
       src="./neko_stream_demo/neko_stream_home.png"
       alt="HOME"
     />
-  </span>
-
-  <span className="flex flex-col gap-1">
-    Ongoing All:
     <img
       src="./neko_stream_demo/neko_stream_ongoing_all.png"
       alt="HOME"
     />
-  </span>
-
-  <span className="flex flex-col gap-1">
-    Details:
     <img
       src="./neko_stream_demo/neko_stream_details.png"
       alt="HOME"
     />
-  </span>
-
-  <span className="flex flex-col gap-1">
-    Stream:
     <img
       src="./neko_stream_demo/neko_stream_stream.png"
       alt="HOME"
     />
-  </span>
-
-  <span className="flex flex-col gap-1">
-    Dowloads:
     <img
       src="./neko_stream_demo/neko_stream_downloads.png"
       alt="HOME"
     />
-  </span>
 </div>
 
 ## NOTE
