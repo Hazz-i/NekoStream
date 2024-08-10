@@ -3,7 +3,7 @@ from flask_cors import CORS
 import logging
 import os
 
-from anime.animeHome import scrape_home_anime
+from anime.animeHome import scrape_home_anime, scrape_home_movie, scrape_batch_home, scrape_top_anime_list
 from anime.ongoingAnime import scrape_ongoing_anime
 from anime.episodes import scrape_anime_episodes
 from anime.players import scrape_anime_players
@@ -19,12 +19,21 @@ CORS = CORS(app, origins="*")
 @app.route('/neko-stream/home', methods=['GET'])
 def home():
     try:
-        url = "https://otakudesu.cloud/"
-        data = scrape_home_anime(url)
+        # Memanggil fungsi untuk mendapatkan data anime
+        anime_url = "https://otakudesu.cloud/"
+        anime_data = scrape_home_anime(anime_url)
+        anime_batch_data = scrape_batch_home(anime_url)
         
-        if data:
-            results = []
-            results.extend(data)
+        # Memanggil fungsi untuk mendapatkan data movie
+        anime_list = "https://myanimelist.net/"
+        top_anime_list = scrape_top_anime_list(anime_list)
+        
+        if anime_data or movie_data:
+            results = {
+                'anime': anime_data if anime_data else [],
+                'batch': anime_batch_data if anime_batch_data else [],
+                'top_anime_list': top_anime_list if top_anime_list else []
+            }
             
             return jsonify({'success': "success", 'data': results})
         else:
@@ -33,7 +42,7 @@ def home():
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
-    
+
 @app.route('/neko-stream/ongoing-all', methods=['GET'])
 def ongoing():
     try:
@@ -56,11 +65,11 @@ def ongoing():
             return jsonify({'success': "success", 'data': results})
         else:
             return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
-
+            
+            
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
-    
 
 @app.route('/neko-stream/<anime>/details', methods=['GET'])
 def details(anime):

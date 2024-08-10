@@ -78,7 +78,7 @@ const Details = () => {
 
   return (
     <>
-      <div className="container min-h-[80vh] pt-20 pb-5 flex flex-col gap-5 items-center justify-center">
+      <div className="container min-h-[95vh] pt-20 pb-5 flex flex-col gap-5 items-center justify-center">
         {/* LOADING */}
         {isLoading && (
           <div className="relative">
@@ -285,8 +285,13 @@ const Details = () => {
                     .map((download, index) => (
                       <li
                         key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2">
-                        <a href={download.link}>{download.platform}</a>
+                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                        <a
+                          href={download.link}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {download.platform}
+                        </a>
                       </li>
                     ))}
                 </ul>
@@ -302,8 +307,13 @@ const Details = () => {
                     .map((download, index) => (
                       <li
                         key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2">
-                        <a href={download.link}>{download.platform}</a>
+                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                        <a
+                          href={download.link}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {download.platform}
+                        </a>
                       </li>
                     ))}
                 </ul>
@@ -319,8 +329,13 @@ const Details = () => {
                     .map((download, index) => (
                       <li
                         key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2">
-                        <a href={download.link}>{download.platform}</a>
+                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                        <a
+                          href={download.link}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {download.platform}
+                        </a>
                       </li>
                     ))}
                 </ul>
@@ -342,8 +357,13 @@ const Details = () => {
                     .map((download, index) => (
                       <li
                         key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2">
-                        <a href={download.link}>{download.platform}</a>
+                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                        <a
+                          href={download.link}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {download.platform}
+                        </a>
                       </li>
                     ))}
                 </ul>
@@ -359,8 +379,13 @@ const Details = () => {
                     .map((download, index) => (
                       <li
                         key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2">
-                        <a href={download.link}>{download.platform}</a>
+                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                        <a
+                          href={download.link}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {download.platform}
+                        </a>
                       </li>
                     ))}
                 </ul>
