@@ -40,7 +40,7 @@ yarn dev
 
 <div className="grid gap-5 px-5">
   <span className="flex flex-col gap-1">
-    <h1>Home:</h1>
+    Home:
     <img
       src="./neko_stream_demo/neko_stream_home.png"
       alt="HOME"
@@ -48,7 +48,7 @@ yarn dev
   </span>
 
   <span className="flex flex-col gap-1">
-    <h1>Ongoing All:</h1>
+    Ongoing All:
     <img
       src="./neko_stream_demo/neko_stream_ongoing_all.png"
       alt="HOME"
@@ -56,7 +56,7 @@ yarn dev
   </span>
 
   <span className="flex flex-col gap-1">
-    <h1>Details:</h1>
+    Details:
     <img
       src="./neko_stream_demo/neko_stream_details.png"
       alt="HOME"
@@ -64,7 +64,7 @@ yarn dev
   </span>
 
   <span className="flex flex-col gap-1">
-    <h1>Stream:</h1>
+    Stream:
     <img
       src="./neko_stream_demo/neko_stream_stream.png"
       alt="HOME"
@@ -72,13 +72,13 @@ yarn dev
   </span>
 
   <span className="flex flex-col gap-1">
-    <h1>Dowloads:</h1>
+    Dowloads:
     <img
       src="./neko_stream_demo/neko_stream_downloads.png"
       alt="HOME"
     />
   </span>
-</div>;
+</div>
 
 ## NOTE
 
