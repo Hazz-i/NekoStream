@@ -4,25 +4,23 @@
 
 Before run the serve, take a look at the following resources:
 
-- [Python v3.12.4 +](https://www.python.org/downloads/) - Python.
-- [Node v21.6.1 +](https://nodejs.org/en) - Node.
+- [Python v3.12.4+](https://www.python.org/downloads/) - Python.
+- [Node v21.6.1+](https://nodejs.org/en) - Node.
 
 library Server:
 
-- [Flask]
-- [FlaskCors]
-- [dotEnv]
+- Flask
+- FlaskCors
+- dotEnv
 
 library Scrapping:
 
-- [Request]
-- [BeautifulSoup4]
+- Request
+- BeautifulSoup4
 
 Configure FrontEnd:
 
 ```bash
-cd FrontEnd
-cp .env.example .env
 yarn install
 ```
 
