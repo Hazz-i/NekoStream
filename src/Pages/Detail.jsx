@@ -193,10 +193,15 @@ const Details = () => {
 
         {/* PLAYER */}
         {!isLoading && (
-          <div className="w-[55rem] bg-gray-900 rounded-lg pb-5">
-            <h1 className="text-lg py-5 ps-5">
-              <span className="font-bold ">{episodeSelected}</span> : {title}
-            </h1>
+          <div className="w-[55rem] bg-gray-900 rounded-lg">
+            <span className="text-lg py-5 px-5 items-center justify-between flex gap-5">
+              <h1 className="font-semibold">
+                {episodeSelected} : <small>{title}</small>
+              </h1>
+              <span className="px-5 bg-gray-500 rounded-md">
+                <p className="font-semibold">360p</p>
+              </span>
+            </span>
 
             {isWhaching ? (
               <div className="flex items-center justify-center space-x-2 w-full h-[35rem]">
@@ -214,7 +219,8 @@ const Details = () => {
                     title="Video Player"></iframe>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
+                {/* TODO */}
+                {/* <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 p-5">
                   {uniqueResolutions.map((resolution, index) => (
                     <span
                       className="px-5 py-2 grow text-center bg-gray-800 rounded-lg"
@@ -255,7 +261,7 @@ const Details = () => {
                         </button>
                       ))}
                   </span>
-                </div>
+                </div> */}
               </span>
             )}
           </div>
