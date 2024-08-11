@@ -5,39 +5,38 @@ import json
 
 logging.basicConfig(level=logging.INFO)
 
-def scrape_anime_players(url):
+def scrape_search_anime(url):
     try:
         response = requests.get(url)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.text, 'html.parser')
         
-        venutama = soup.find('div', class_='venutama')
+        page = soup.find('div', class_='page')
         
-        if not venutama:
-            logging.warning("Couldn't find div with class 'venutama'")
+        if not page:
+            logging.warning("Couldn't find div with class 'page'")
             return None
 
-        resolutions = venutama.find('div', class_='mirrorstream')
-        if not resolutions:
-            logging.warning("Couldn't find div with class 'mirrorstream'")
+        anime_elms = page.find_all('li')
+        if not anime_elms:
+            logging.warning("Couldn't find li")
             return None
         
         anime_data = []
 
-        for ul in resolutions.find_all('ul'):
-            resolution = ul['class'][0]  # Mengambil resolusi dari class ul (misal: 'm360p', 'm480p', dll.)
-            for li in ul.find_all('li'):
-                iframe_div = li.find_previous('div', class_='responsive-embed-stream')
-                if iframe_div:
-                    iframe = iframe_div.find('iframe')
-                    if iframe and 'src' in iframe.attrs:
-                        episode = {
-                            'resolution': resolution.removeprefix('m'),  # Menghapus karakter 'm' dari resolusi
-                            'provider': li.get_text(strip=True),
-                            'link': iframe['src']
-                        }
-                        anime_data.append(episode)
+        for elem in anime_elms:
+            datas = elem.find_all('div', class_='set')
+
+            anime = {
+                'title': elem.find('h2').get_text(strip=True),
+                'link': elem.find('h2').find('a')['href'],
+                'image': elem.find('img')['src'],
+                'genres': datas[0].get_text(strip=True).replace('Genres:', ''),
+                'status': datas[1].get_text(strip=True).replace('Status: ', ''),
+                'rating': datas[2].get_text(strip=True).replace('Rating: ', ''),
+            }
+            anime_data.append(anime)
 
         return anime_data
     
@@ -57,10 +56,10 @@ def save_to_json(data, filename):
         logging.error(f"An error occurred while saving data to JSON: {e}")
 
 # Usage
-# url = 'https://otakudesu.cloud/episode/sknk-episode-6-sub-indo/' 
+# url = 'https://otakudesu.cloud/?s=boku+no&post_type=anime' 
 
 # try:
-#     data = scrape_anime_players(url)
+#     data = scrape_search_anime(url)
 #     if data:
 #         print(json.dumps(data, ensure_ascii=False, indent=2))
         

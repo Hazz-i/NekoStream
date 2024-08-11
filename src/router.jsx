@@ -6,6 +6,7 @@ import Genre from "@/Pages/Genre";
 import Detail from "@/Pages/Detail";
 import Movie from "@/Pages/movie/Movie";
 import Batch from "@/Pages/Batch";
+import Search from "@/Pages/Search"; // Pastikan Anda membuat halaman ini
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,8 @@ const router = createBrowserRouter([
       { path: "/neko-stream/movie-all*", element: <Movie /> },
       { path: "/neko-stream/movie-all/:page", element: <Movie /> },
       { path: "/neko-stream/detail/:title/:episode", element: <Detail /> },
+
+      { path: "/neko-stream/search/:query", element: <Search /> },
     ],
   },
 ]);

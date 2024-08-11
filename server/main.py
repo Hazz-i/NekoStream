@@ -8,6 +8,7 @@ from anime.ongoingAnime import scrape_ongoing_anime
 from anime.episodes import scrape_anime_episodes
 from anime.players import scrape_anime_players
 from anime.downloads import scrape_anime_downloads
+from anime.searchAnime import scrape_search_anime
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -125,6 +126,28 @@ def downloads(anime, episode):
 
         url = f"https://otakudesu.cloud/episode/{episode}/"
         data = scrape_anime_downloads(url)
+        
+        if data:
+            results = []
+            results.extend(data)
+            
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+
+@app.route('/neko-stream/search=<anime>', methods=['GET'])
+def search(anime):
+    try:
+        animeSearch = anime.replace(" ", "+")
+        if not anime:
+            return jsonify({'success': "fail", 'message': "Invalid parameters."}), 400
+
+        url = f"https://otakudesu.cloud/?s={animeSearch}&post_type=anime"
+        data = scrape_search_anime(url)
         
         if data:
             results = []

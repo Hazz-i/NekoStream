@@ -4,7 +4,7 @@ import axiosClient from "@/axios";
 
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 
 const Details = () => {
   const { title, episode } = useParams();
@@ -19,7 +19,11 @@ const Details = () => {
   const [episodeSelected, setEpisodeSelected] = useState(episode.replace(/%20/g, " "));
   const [episodeSelectedLink, setEpisodeSelectedLink] = useState("");
 
+  const [episodeBacth, setEpisodeBacth] = useState([]);
+
   const uniqueResolutions = [...new Set(isPlaying?.map((player) => player.resolution))];
+
+  console.log(title);
 
   useEffect(() => {
     const fetchAnimeDetails = async () => {
@@ -28,12 +32,18 @@ const Details = () => {
         const response = await axiosClient.get(`/${title}/details`);
         setAnimeDetails(response.data.data);
 
-        if (response.data.data[0].episodes) {
-          const sortedEpisodes = response.data.data[0].episodes.reverse();
+        if (response.data.data[0].episodes.some((episode) => episode.link.includes("https://otakudesu.cloud/episode/"))) {
+          const filteredEpisodes = response.data.data[0].episodes.filter((episode) => episode.link.includes("https://otakudesu.cloud/episode/"));
+
+          // Reverse urutan episodes
+          const sortedEpisodes = filteredEpisodes.reverse();
           const epsdSum = sortedEpisodes.length;
 
+          // Set state dengan episodes yang sudah difilter dan di-reverse
           setEpisodes(sortedEpisodes);
-          setEpisodeSelectedLink(response.data.data[0].episodes[epsdSum - 1].link.replace("https://otakudesu.cloud/episode/", "").replace("/", ""));
+
+          // Set episode terakhir dalam sortedEpisodes sebagai episode terpilih
+          setEpisodeSelectedLink(sortedEpisodes[epsdSum - 1].link.replace("https://otakudesu.cloud/episode/", "").replace("/", ""));
         }
       } catch (err) {
         console.log(err.message);
@@ -47,7 +57,15 @@ const Details = () => {
 
   const handleClickEpisode = (episode, link) => () => {
     setEpisodeSelected(episode.replace(/%20/g, " "));
-    setEpisodeSelectedLink(link.replace("https://otakudesu.cloud/episode/", "").replace("/", ""));
+    try {
+      if (link.includes("https://otakudesu.cloud/episode/")) {
+        setEpisodeSelectedLink(link.replace("https://otakudesu.cloud/episode/", "").replace("/", ""));
+      } else {
+        setEpisodeSelectedLink(link.replace("https://otakudesu.cloud/batch/", "").replace("/", ""));
+      }
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   useEffect(() => {
@@ -75,6 +93,8 @@ const Details = () => {
     fetchDownloads();
     fetchEpisode();
   }, [episodeSelectedLink]);
+
+  console.log(downloads);
 
   return (
     <>
@@ -270,7 +290,7 @@ const Details = () => {
 
         {/* DOWNLOADS */}
         {!isLoading && !isWhaching && (
-          <>
+          <div>
             <div className="text-start w-[55rem] font-bold text-lg">
               <h1>Link Downloads:</h1>
             </div>
@@ -287,7 +307,7 @@ const Details = () => {
                 </span>
                 <ul className="flex items-center justify-center gap-3">
                   {downloads
-                    .filter((download) => download.type === "Mp4 360p")
+                    .filter((download) => download.type === "Mp4 360p" || download.type === "360p")
                     .map((download, index) => (
                       <li
                         key={index}
@@ -309,7 +329,7 @@ const Details = () => {
                 </span>
                 <ul className="flex items-center justify-center gap-3">
                   {downloads
-                    .filter((download) => download.type === "Mp4 480p")
+                    .filter((download) => download.type === "Mp4 480p" || download.type === "480p")
                     .map((download, index) => (
                       <li
                         key={index}
@@ -331,7 +351,7 @@ const Details = () => {
                 </span>
                 <ul className="flex items-center justify-center gap-3">
                   {downloads
-                    .filter((download) => download.type === "Mp4 720p")
+                    .filter((download) => download.type === "Mp4 720p" || download.type === "720p")
                     .map((download, index) => (
                       <li
                         key={index}
@@ -348,57 +368,61 @@ const Details = () => {
               </div>
               {/* END MP 4 */}
 
-              {/* MKV */}
-              <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
-                <span className="font-bold">MKV</span>
-              </h1>
+              {downloads.some((download) => download.type === "MKV") && (
+                <div>
+                  {/* MKV */}
+                  <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
+                    <span className="font-bold">MKV</span>
+                  </h1>
 
-              <div className="flex items-center justify-around">
-                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                  <h1>480p</h1>
-                </span>
-                <ul className="flex items-center justify-center gap-3">
-                  {downloads
-                    .filter((download) => download.type === "MKV 480p")
-                    .map((download, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                        <a
-                          href={download.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {download.platform}
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+                  <div className="flex items-center justify-around">
+                    <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                      <h1>480p</h1>
+                    </span>
+                    <ul className="flex items-center justify-center gap-3">
+                      {downloads
+                        .filter((download) => download.type === "MKV 480p")
+                        .map((download, index) => (
+                          <li
+                            key={index}
+                            className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                            <a
+                              href={download.link}
+                              target="_blank"
+                              rel="noopener noreferrer">
+                              {download.platform}
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
 
-              <div className="flex items-center justify-around">
-                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                  <h1>720p</h1>
-                </span>
-                <ul className="flex items-center justify-center gap-3">
-                  {downloads
-                    .filter((download) => download.type === "MKV 720p")
-                    .map((download, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                        <a
-                          href={download.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {download.platform}
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
+                  <div className="flex items-center justify-around">
+                    <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
+                      <h1>720p</h1>
+                    </span>
+                    <ul className="flex items-center justify-center gap-3">
+                      {downloads
+                        .filter((download) => download.type === "MKV 720p")
+                        .map((download, index) => (
+                          <li
+                            key={index}
+                            className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
+                            <a
+                              href={download.link}
+                              target="_blank"
+                              rel="noopener noreferrer">
+                              {download.platform}
+                            </a>
+                          </li>
+                        ))}
+                    </ul>
+                  </div>
+                  {/* END MKV */}
+                </div>
+              )}
             </span>
-            {/* END MKV */}
-          </>
+          </div>
         )}
       </div>
     </>

@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="container min-h-[95vh] pt-20 pb-5 flex justify-staet items-start gap-5">
+      <div className="container min-h-[95vh] pt-20 pb-5 flex justify-start items-start gap-5">
         {search.length == 0 ? (
           <span className="flex flex-col gap-5 w-[60rem]">
             {/* ONGOING */}
@@ -146,7 +146,7 @@ const Home = () => {
         <span className="grid gap-2">
           {!isLoading && (
             <div className="grid gap-2">
-              <h1 className="font-bold text-xl">Cari Anime</h1>
+              <h1 className="font-bold text-xl">Cari Tier Anime</h1>
               <span className="flex grow items-center space-x-2">
                 <Input
                   type="serach"

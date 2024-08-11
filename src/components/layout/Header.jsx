@@ -1,7 +1,12 @@
 import { ModeToggle } from "@/components/mode-toggle";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
+
+import { useNavigate } from "react-router-dom";
+import { useSearch } from "@/context/searchProvier";
 
 const Header = () => {
   const navList = [
@@ -21,6 +26,13 @@ const Header = () => {
 
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // const { setSearch, isSearch } = useSearch();
+  const { setSearch, isSearch, setIsSearch } = useSearch();
+  const [searchAnime, setSearchAnime] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 0) {
@@ -36,8 +48,24 @@ const Header = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setIsSearching(isSearch);
+  }, [isSearch]);
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+
+    if (searchAnime.length === 0) {
+      navigate("/neko-stream/home");
+    } else {
+      setSearch(searchAnime);
+      setIsSearch(true);
+      navigate(`/neko-stream/search/${encodeURIComponent(searchAnime)}`);
+    }
+  };
+
   return (
-    <header className={`flex items-center justify-between px-10 py-4 border-b-2 border-gray-800 fixed w-full z-50 ${isScrolled ? "backdrop-blur-sm" : "bg-gray-900"}`}>
+    <header className={`flex items-center justify-around py-4 border-b-2 border-gray-800 fixed w-full z-50 ${isScrolled ? "backdrop-blur-sm" : "bg-gray-900"}`}>
       <h1 className="font-bold text-2xl">Neko Stream</h1>
 
       <ul className="flex gap-5 items-center justify-center">
@@ -53,6 +81,21 @@ const Header = () => {
             </NavLink>
           </li>
         ))}
+        <form
+          className="flex w-full max-w-sm items-center space-x-2"
+          onSubmit={handleSearch}
+          action="#">
+          <Input
+            type="serach"
+            placeholder="Cari anime..."
+            onChange={(e) => setSearchAnime(e.target.value)}
+          />
+          <Button
+            type="submit"
+            disabled={isSearching}>
+            cari
+          </Button>
+        </form>
         <li>
           <ModeToggle />
         </li>
