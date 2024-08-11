@@ -32,6 +32,7 @@ export const SearchProvider = ({ children }) => {
         setIsSearch(false);
       } finally {
         setIsSearch(false);
+        setSearch("");
       }
     };
 

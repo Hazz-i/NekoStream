@@ -62,6 +62,8 @@ const Header = () => {
       setIsSearch(true);
       navigate(`/neko-stream/search/${encodeURIComponent(searchAnime)}`);
     }
+
+    setSearchAnime("");
   };
 
   return (
@@ -88,6 +90,7 @@ const Header = () => {
           <Input
             type="serach"
             placeholder="Cari anime..."
+            value={searchAnime}
             onChange={(e) => setSearchAnime(e.target.value)}
           />
           <Button
