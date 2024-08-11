@@ -7,6 +7,8 @@ const StateContent = createContext({
   batchHome: {},
   topAnimeList: {},
   ongoingAll: {},
+  animeGenres: {},
+  setAnimeGenres: () => {},
   setOngoingHome: () => {},
   setBatchHome: () => {},
   setTopAnimeList: () => {},
@@ -22,6 +24,7 @@ export const ContextProvider = ({ children }) => {
   const [topAnimeList, setTopAnimeList] = useState([]);
   const [ongoingAll, setOngoingAll] = useState([]);
   const [batchAll, setBatchAll] = useState([]);
+  const [animeGenres, setAnimeGenres] = useState([]);
 
   useEffect(() => {
     const fetchAnimesResponse = async () => {
@@ -31,6 +34,9 @@ export const ContextProvider = ({ children }) => {
         setOngoingHome(anime);
         setTopAnimeList(top_anime_list);
         setBatchHome(batch);
+
+        const animeGenresResponse = await axiosClient.get(`/genres`);
+        setAnimeGenres(animeGenresResponse.data.data);
 
         const ongoingAllResponse = await axiosClient.get(`/ongoing-all`);
         setOngoingAll(ongoingAllResponse.data.data);
@@ -51,10 +57,12 @@ export const ContextProvider = ({ children }) => {
       value={{
         ongoingAll,
         topAnimeList,
+        animeGenres,
         batchHome,
         ongoingHome,
         batchAll,
         setBatchAll,
+        setAnimeGenres,
         setOngoingHome,
         setTopAnimeList,
         setBatchHome,

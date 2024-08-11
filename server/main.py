@@ -3,13 +3,15 @@ from flask_cors import CORS
 import logging
 import os
 
-from anime.animeHome import scrape_home_anime, scrape_home_movie, scrape_batch_home, scrape_top_anime_list
+from anime.animeHome import scrape_home_anime, scrape_batch_home, scrape_top_anime_list
 from anime.ongoingAnime import scrape_ongoing_anime
 from anime.episodes import scrape_anime_episodes
 from anime.players import scrape_anime_players
 from anime.downloads import scrape_anime_downloads
 from anime.searchAnime import scrape_search_anime
 from anime.batchAnime import scrape_batch_anime
+from anime.genres import scrape_anime_genres
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -26,7 +28,6 @@ def home():
         anime_data = scrape_home_anime(anime_url)
         anime_batch_data = scrape_batch_home(anime_url)
         
-        # Memanggil fungsi untuk mendapatkan data movie
         anime_list = "https://myanimelist.net/topanime.php?type=bypopularity&limit=0"
         top_anime_list = scrape_top_anime_list(anime_list)
         
@@ -38,6 +39,21 @@ def home():
             }
             
             return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+
+@app.route('/neko-stream/genres', methods=['GET'])
+def genres():
+    try:
+        anime_url = "https://otakudesu.cloud/genre-list/"
+        anime_genres = scrape_anime_genres(anime_url)
+        
+        if anime_genres:
+            return jsonify({'success': "success", 'data': anime_genres})
         else:
             return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
 
