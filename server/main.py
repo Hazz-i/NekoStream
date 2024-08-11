@@ -9,6 +9,7 @@ from anime.episodes import scrape_anime_episodes
 from anime.players import scrape_anime_players
 from anime.downloads import scrape_anime_downloads
 from anime.searchAnime import scrape_search_anime
+from anime.batchAnime import scrape_batch_anime
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -26,7 +27,7 @@ def home():
         anime_batch_data = scrape_batch_home(anime_url)
         
         # Memanggil fungsi untuk mendapatkan data movie
-        anime_list = "https://myanimelist.net/"
+        anime_list = "https://myanimelist.net/topanime.php?type=bypopularity&limit=0"
         top_anime_list = scrape_top_anime_list(anime_list)
         
         if anime_data or anime_batch_data or top_anime_list:
@@ -54,6 +55,34 @@ def ongoing():
             url = f'https://otakudesu.cloud/ongoing-anime/page/{page}/'
             logging.info(f"Scraping page {page}")
             data = scrape_ongoing_anime(url)
+
+            if data:
+                results.extend(data)
+                page += 1
+            else:
+                logging.info(f"No more data found on page {page}. Stopping.")
+                break  
+
+        if results:
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+            
+            
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+    
+@app.route('/neko-stream/batch-all', methods=['GET'])
+def batch():
+    try:
+        page = 1
+        results = []
+
+        while True:
+            url = f'https://otakudesu.cloud/complete-anime/page/{page}/'
+            logging.info(f"Scraping page {page}")
+            data = scrape_batch_anime(url)
 
             if data:
                 results.extend(data)

@@ -5,6 +5,9 @@ import axiosClient from "@/axios";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
+import Informations from "./details/Informations";
+import Downloads from "./details/Downloads";
+import Episodes from "./details/Episodes";
 
 const Details = () => {
   const { title, episode } = useParams();
@@ -20,10 +23,6 @@ const Details = () => {
   const [episodeSelectedLink, setEpisodeSelectedLink] = useState("");
 
   const [episodeBacth, setEpisodeBacth] = useState([]);
-
-  const uniqueResolutions = [...new Set(isPlaying?.map((player) => player.resolution))];
-
-  console.log(title);
 
   useEffect(() => {
     const fetchAnimeDetails = async () => {
@@ -64,7 +63,7 @@ const Details = () => {
         setEpisodeSelectedLink(link.replace("https://otakudesu.cloud/batch/", "").replace("/", ""));
       }
     } catch (err) {
-      console.log(err.message);
+      console.log(err.response.status);
     }
   };
 
@@ -75,7 +74,7 @@ const Details = () => {
         const response = await axiosClient.get(`/${title}/${episodeSelectedLink}`);
         setIsPlaying(response.data.data);
       } catch (err) {
-        console.log(err.message);
+        console.log(err.response.status);
       } finally {
         setIsWhaching(() => isWhaching);
       }
@@ -86,15 +85,13 @@ const Details = () => {
         const response = await axiosClient.get(`/${title}/${episodeSelectedLink}/downloads`);
         setDownloads(response.data.data);
       } catch (err) {
-        console.log(err.message);
+        console.log(err.response.status);
       }
     };
 
     fetchDownloads();
     fetchEpisode();
   }, [episodeSelectedLink]);
-
-  console.log(downloads);
 
   return (
     <>
@@ -114,9 +111,10 @@ const Details = () => {
             className="w-full flex flex-col gap-5 items-center justify-center pt-5"
             key={index}>
             <div className="w-3/4 bg-gray-900 rounded-lg">
-              <h1 className="text-xl py-5 ps-5">
-                <span className="font-bold ">{anime.Judul}</span> <br />({anime.Japanese})
-              </h1>
+              <div className="py-5 ps-5">
+                <h1 className="font-bold text-xl">{anime.Judul}</h1>
+                <small>({anime.Japanese})</small>
+              </div>
 
               <div className="flex flex-wrap justify-start items-center px-5 gap-5">
                 <Card
@@ -129,52 +127,7 @@ const Details = () => {
 
                 {/* INFORMARION */}
                 <span className="flex flex-col gap-2">
-                  <Table>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Genre </strong>
-                        </TableCell>
-                        <TableCell>{anime.Genre ? anime.Genre : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Durasi </strong>
-                        </TableCell>
-                        <TableCell>{anime.Durasi ? anime.Durasi : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Produser </strong>
-                        </TableCell>
-                        <TableCell>{anime.Produser ? anime.Produser : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Status </strong>
-                        </TableCell>
-                        <TableCell>{anime.Status ? anime.Status : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Studio </strong>
-                        </TableCell>
-                        <TableCell>{anime.Studio ? anime.Studio : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Tanggal Rilis </strong>
-                        </TableCell>
-                        <TableCell>{anime["Tanggal Rilis"] ? anime["Tanggal Rilis"] : "-"}</TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-sm">
-                          <strong>Total Episode </strong>
-                        </TableCell>
-                        <TableCell>{anime["Total Episode"] ? anime["Total Episode"] : "-"}</TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
+                  <Informations anime={anime} />
                 </span>
                 {/* END INFORMARION */}
               </div>
@@ -194,17 +147,11 @@ const Details = () => {
             {/* CHAPTERS */}
             <div className="w-3/4">
               <h2 className="text-lg font-bold">Episode &nbsp;:</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-5 py-5">
-                {episodes.map((episode, index) => (
-                  <Button
-                    onClick={handleClickEpisode(episode.title, episode.link)}
-                    key={index}
-                    className={`px-5 py-2 rounded-lg text-center hover:bg-gray-950 transition-all ease-in-out duration-300 ${episode.title == episodeSelected ? "bg-gray-900 text-gray-400 " : "bg-gray-800 text-white"}`}
-                    disabled={episode.title == episodeSelected}>
-                    {episode.title}
-                  </Button>
-                ))}
-              </div>
+              <Episodes
+                episodes={episodes}
+                episodeSelected={episodeSelected}
+                handleClickEpisode={handleClickEpisode}
+              />
             </div>
             {/* END CHAPTERS */}
           </span>
@@ -214,8 +161,8 @@ const Details = () => {
         {/* PLAYER */}
         {!isLoading && (
           <div className="w-[55rem] bg-gray-900 rounded-lg">
-            <span className="text-lg py-5 px-5 items-center justify-between flex gap-5">
-              <h1 className="font-semibold">
+            <span className=" py-5 px-5 items-center justify-between flex gap-5">
+              <h1 className="text-lg font-semibold">
                 {episodeSelected} : <small>{title}</small>
               </h1>
               <span className="px-5 bg-gray-500 rounded-md">
@@ -289,141 +236,7 @@ const Details = () => {
         {/* END PLAYER */}
 
         {/* DOWNLOADS */}
-        {!isLoading && !isWhaching && (
-          <div>
-            <div className="text-start w-[55rem] font-bold text-lg">
-              <h1>Link Downloads:</h1>
-            </div>
-
-            {/* MP 4 */}
-            <span className="w-[55rem] bg-gray-900 rounded-lg grid gap-5 py-5">
-              <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
-                <span className="font-bold">Mp 4</span>
-              </h1>
-
-              <div className="flex items-center justify-around">
-                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                  <h1>360p</h1>
-                </span>
-                <ul className="flex items-center justify-center gap-3">
-                  {downloads
-                    .filter((download) => download.type === "Mp4 360p" || download.type === "360p")
-                    .map((download, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                        <a
-                          href={download.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {download.platform}
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-
-              <div className="flex items-center justify-around">
-                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                  <h1>480p</h1>
-                </span>
-                <ul className="flex items-center justify-center gap-3">
-                  {downloads
-                    .filter((download) => download.type === "Mp4 480p" || download.type === "480p")
-                    .map((download, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                        <a
-                          href={download.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {download.platform}
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-
-              <div className="flex items-center justify-around">
-                <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                  <h1>720p</h1>
-                </span>
-                <ul className="flex items-center justify-center gap-3">
-                  {downloads
-                    .filter((download) => download.type === "Mp4 720p" || download.type === "720p")
-                    .map((download, index) => (
-                      <li
-                        key={index}
-                        className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                        <a
-                          href={download.link}
-                          target="_blank"
-                          rel="noopener noreferrer">
-                          {download.platform}
-                        </a>
-                      </li>
-                    ))}
-                </ul>
-              </div>
-              {/* END MP 4 */}
-
-              {downloads.some((download) => download.type === "MKV") && (
-                <div>
-                  {/* MKV */}
-                  <h1 className="text-lg text-center py-2 px-5 bg-gray-950 rounded-sm mx-5">
-                    <span className="font-bold">MKV</span>
-                  </h1>
-
-                  <div className="flex items-center justify-around">
-                    <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                      <h1>480p</h1>
-                    </span>
-                    <ul className="flex items-center justify-center gap-3">
-                      {downloads
-                        .filter((download) => download.type === "MKV 480p")
-                        .map((download, index) => (
-                          <li
-                            key={index}
-                            className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                            <a
-                              href={download.link}
-                              target="_blank"
-                              rel="noopener noreferrer">
-                              {download.platform}
-                            </a>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-
-                  <div className="flex items-center justify-around">
-                    <span className="text-center bg-gray-800 rounded-sm px-24 py-2">
-                      <h1>720p</h1>
-                    </span>
-                    <ul className="flex items-center justify-center gap-3">
-                      {downloads
-                        .filter((download) => download.type === "MKV 720p")
-                        .map((download, index) => (
-                          <li
-                            key={index}
-                            className="py-2 px-5 rounded-sm text-center border-2 hover:bg-gray-500 transition-all ease-in-out duration-300 hover:text-gray-950">
-                            <a
-                              href={download.link}
-                              target="_blank"
-                              rel="noopener noreferrer">
-                              {download.platform}
-                            </a>
-                          </li>
-                        ))}
-                    </ul>
-                  </div>
-                  {/* END MKV */}
-                </div>
-              )}
-            </span>
-          </div>
-        )}
+        {!isLoading && !isWhaching && <Downloads downloads={downloads} />}
       </div>
     </>
   );

@@ -218,27 +218,32 @@ def scrape_top_anime_list(url):
 
     soup = BeautifulSoup(response.text, 'html.parser')
 
-    ranking_digests = soup.find_all('div', class_='ranking-digest')
-    top_entries = ranking_digests[2].find_all('li')
+    table = soup.find('table', class_='top-ranking-table')
+
+    table_rows = table.find_all('tr', class_="ranking-list")
 
     top_anime_data = []
-    for entry in top_entries:
+    for row in table_rows:
         try:
-            ranking = entry.find('span', class_='rank').text.strip()
-            img = entry.find('p', class_="data-image").find('a').find('img')['data-src']
-            title = entry.find('h3', class_="h3_side").text.strip()
-            info = entry.find('span', class_="info pt8").text.strip()
 
-            # Split the info to get description and rate
-            description_parts = info.split(',')
-            description = description_parts[1].strip()
-            rate = description_parts[2].strip().split()[1]
+            ranking = row.find("td", class_="rank ac").text.strip()
+            title = row.find("td", class_="rank ac").text.strip()
+            img = row.find('td', class_="title al va-t word-break").find('a').find('img')['data-src']
+            title = row.find('td', class_="title al va-t word-break").find("div", class_="di-ib clearfix").find("h3").text.strip()
+            info = row.find('td', class_="title al va-t word-break").find("div", class_="information di-ib mt4").text.strip()
+
+            description_parts = info.splitlines()
+            description = description_parts[0].strip().replace('TV ', '').replace('(', '').replace(')', '')
+            date_range = description_parts[1].strip()
+
+            rate = row.find('td', class_="score ac fs14").text.strip()
 
             top_anime_data.append({
                 'ranking': ranking,
                 'title': title,
                 'image_url': img,
                 'rating': rate,
+                'data_range': date_range,
                 "description": description
             })
         except Exception as e:
@@ -257,7 +262,7 @@ def save_to_json(data, filename):
 
 # Usage
 # url = 'https://otakudesu.cloud/'
-# url = 'https://myanimelist.net/'
+# url = 'https://myanimelist.net/topanime.php?type=bypopularity&limit=0'
 
 # try:
 #     data = scrape_top_anime_list(url)
