@@ -16,6 +16,7 @@ const router = createBrowserRouter([
       { path: "", element: <Navigate to="/neko-stream/home" /> },
       { path: "/neko-stream/home", element: <Home /> },
       { path: "/neko-stream/genre", element: <Genre /> },
+      { path: "/neko-stream/genre/:grene/:page", element: <Genre /> },
 
       { path: "/neko-stream/ongoing-all*", element: <Ongoing /> },
       { path: "/neko-stream/ongoing-all/:page", element: <Ongoing /> },

@@ -10,7 +10,7 @@ from anime.players import scrape_anime_players
 from anime.downloads import scrape_anime_downloads
 from anime.searchAnime import scrape_search_anime
 from anime.batchAnime import scrape_batch_anime
-from anime.genres import scrape_anime_genres
+from anime.genres import scrape_anime_genres, scrape_grene, scrape_grene_pages
 
 from dotenv import load_dotenv
 
@@ -49,8 +49,9 @@ def home():
 @app.route('/neko-stream/genres', methods=['GET'])
 def genres():
     try:
-        anime_url = "https://otakudesu.cloud/genre-list/"
-        anime_genres = scrape_anime_genres(anime_url)
+        genres = "https://otakudesu.cloud/genre-list/"
+
+        anime_genres = scrape_anime_genres(genres)
         
         if anime_genres:
             return jsonify({'success': "success", 'data': anime_genres})
@@ -60,6 +61,28 @@ def genres():
     except Exception as e:
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+    
+@app.route('/neko-stream/genres/<genre>/<page>', methods=['GET'])
+def genres_data(genre, page):
+    try:
+        sub_genres = f'https://otakudesu.cloud/genres/{genre}/page/{page}/'
+
+        genre_data = scrape_grene(sub_genres)
+        genre_pages = scrape_grene_pages(sub_genres)
+
+        if genre_data or genre_pages:
+            results = {
+                'genre_data': genre_data if genre_data else [],
+                'genre_pages': genre_pages if genre_pages else []
+            }
+            return jsonify({'success': "success", 'data': results})
+        else:
+            return jsonify({'success': "fail", 'message': "No data was scraped."}), 404
+
+    except Exception as e:
+        logging.error(f"An error occurred: {e}")
+        return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
+    
 
 @app.route('/neko-stream/ongoing-all', methods=['GET'])
 def ongoing():
