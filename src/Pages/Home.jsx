@@ -44,94 +44,91 @@ const Home = () => {
   }, [search]);
 
   return (
-    <>
-      <Header />
-      <div className="container min-h-[95vh] pt-20 pb-5 flex flex-col md:flex-row justify-start items-start gap-5">
-        <span className="flex flex-col gap-5 w-[60rem]">
-          {/* ONGOING */}
-          <MainSection
-            isLoading={isLoading}
-            animesData={ongoingAnimes}
-            length={10}
-            title="Anime Ongoing"
-            link="ongoing-all"
-          />
-          {/* END ONGOING */}
+    <div className="px-3 lg:px-0 lg:container min-h-[94.5vh] pt-20 pb-5 flex flex-col md:flex-row justify-start items-start lg:gap-5 gap-3">
+      <span className="flex flex-col gap-5 w-full lg:w-[60rem]">
+        {/* ONGOING */}
+        <MainSection
+          isLoading={isLoading}
+          animesData={ongoingAnimes}
+          length={{ sm: 4, lg: 5 }}
+          title="Anime Ongoing"
+          link="ongoing-all"
+        />
+        {/* END ONGOING */}
 
-          {/* BATCH */}
-          <MainSection
-            isLoading={isLoading}
-            animesData={batchAnime}
-            length={5}
-            title="Anime Batch"
-            link="batch-all"
-          />
-          {/* END BATCH */}
-        </span>
+        {/* BATCH */}
+        <MainSection
+          isLoading={isLoading}
+          animesData={batchAnime}
+          length={{ sm: 2, lg: 5 }}
+          title="Anime Batch"
+          link="batch-all"
+        />
+        {/* END BATCH */}
+      </span>
 
-        {/* SEARCH */}
-        <span className="grid gap-2">
-          {!isLoading && (
-            <div className="grid gap-2">
-              <h1 className="font-bold text-xl">Cari Tier Anime</h1>
-              <span className="flex grow items-center space-x-2">
-                <Input
-                  type="serach"
-                  placeholder="Ketikan anime yang anda cari..."
-                  onChange={(e) => setSearch(e.target.value)}
-                />
-              </span>
-            </div>
-          )}
-          {/* END SEARCH */}
-
-          {/* TOP ANIME LIST */}
-          <div className="w-[25rem] flex flex-col">
-            {!isLoading ? (
-              <span className="flex justify-between items-center py-5">
-                <h1 className="font-bold text-xl">Top Anime List</h1>
-                <small className="text-gray-700 font-semibold">by MyAnimeList</small>
-              </span>
-            ) : (
-              <span className="flex justify-between items-center py-5">
-                <Skeleton className="w-[200px] h-[20px]"></Skeleton>
-                <Skeleton className="w-[100px] h-[20px]"></Skeleton>
-              </span>
-            )}
-
-            <span className="grid grid-cols-1 gap-5 py-5 px-5 bg-gray-900 rounded-lg">
-              {isLoading && (
-                <div className="flex gap-4 min-w-[30rem]">
-                  <div className="flex items-center justify-center">
-                    <Skeleton className={"h-4 w-2"}></Skeleton>
-                  </div>
-
-                  <Skeleton className="w-[50px] h-[75px] "></Skeleton>
-                  <span className="flex flex-col justify-between">
-                    <Skeleton className="w-[230px] h-[20px]"></Skeleton>
-                    <div className="grid gap-1">
-                      <Skeleton className="w-[150px] h-[20px]"></Skeleton>
-                      <Skeleton className="w-[100px] h-[20px]"></Skeleton>
-                    </div>
-                  </span>
-                </div>
-              )}
-
-              {search.length != 0 ? (
-                animeSearch.length == 0 ? (
-                  <small className="text-center font-semibold">Anime Tidak di Temukan</small>
-                ) : (
-                  <AnimeListSection animesData={animeSearch} />
-                )
-              ) : (
-                <AnimeListSection animesData={animeListFilter} />
-              )}
+      {/* SEARCH */}
+      <span className="grid gap-2">
+        {!isLoading && (
+          <div className="grid gap-2">
+            <h1 className="font-bold text-xl">Cari Tier Anime</h1>
+            <span className="flex grow items-center space-x-2">
+              <Input
+                type="serach"
+                placeholder="Ketikan anime yang anda cari..."
+                onChange={(e) => setSearch(e.target.value)}
+              />
             </span>
           </div>
-          {/* END TOP ANIME LIST */}
-        </span>
-      </div>
-    </>
+        )}
+        {/* END SEARCH */}
+
+        {/* TOP ANIME LIST */}
+        <div className="w-[24.5rem] lg:w-[25rem] flex flex-col">
+          {!isLoading ? (
+            <span className="flex justify-between items-center py-5">
+              <h1 className="font-bold text-xl">Top Anime List</h1>
+              <small className="text-gray-700 font-semibold">by MyAnimeList</small>
+            </span>
+          ) : (
+            <span className="flex justify-between items-center py-5">
+              <Skeleton className="w-[150px] h-[10px] lg:w-[200px] lg:h-[20px]"></Skeleton>
+              <Skeleton className="w-[50px] h-[10px] lg:w-[100px] lg:h-[20px]"></Skeleton>
+            </span>
+          )}
+
+          <span className="grid grid-cols-1 gap-5 py-5 px-5 bg-gray-900 rounded-lg">
+            {isLoading && (
+              <div className="flex gap-4 min-w-[20rem]">
+                <div className="flex items-center justify-center">
+                  <Skeleton className={"h-4 w-2"}></Skeleton>
+                </div>
+
+                <Skeleton className="w-[50px] h-[75px] "></Skeleton>
+                <span className="flex flex-col justify-between">
+                  <Skeleton className="w-[230px] h-[10px] lg:h-[20px]"></Skeleton>
+                  <div className="grid gap-1">
+                    <Skeleton className="w-[150px] h-[10px] lg:h-[20px]"></Skeleton>
+                    <Skeleton className="w-[100px] h-[10px] lg:h-[20px]"></Skeleton>
+                  </div>
+                </span>
+              </div>
+            )}
+
+            {search.length != 0 ? (
+              animeSearch.length == 0 ? (
+                <small className="text-center font-semibold">Anime Tidak di Temukan</small>
+              ) : (
+                <AnimeListSection animesData={animeSearch} />
+              )
+            ) : (
+              <AnimeListSection animesData={animeListFilter} />
+            )}
+          </span>
+        </div>
+        {/* END TOP ANIME LIST */}
+      </span>
+    </div>
   );
 };
 

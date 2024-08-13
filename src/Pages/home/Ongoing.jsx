@@ -35,13 +35,13 @@ const Ongoing = () => {
 
   return (
     <>
-      <div className="container min-h-[95vh] pt-20 pb-5 flex flex-col gap-5 items-center justify-center">
+      <div className="px-3 lg:px-0 lg:container min-h-[94.5vh] pt-20 pb-5 flex flex-col gap-3 lg:gap-5 items-center justify-center">
         {/* ONGOING */}
         <SubSection
           title="Anime Ongoing"
           isLoading={isLoading}
           animesData={currentItems}
-          length={32}
+          length={{ sm: 6, lg: 16 }}
         />
         {/* END ONGOING */}
 

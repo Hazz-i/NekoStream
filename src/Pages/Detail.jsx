@@ -3,8 +3,6 @@ import { useParams } from "react-router-dom";
 import axiosClient from "@/axios";
 
 import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Table, TableBody, TableCell, TableRow } from "@/components/ui/table";
 import Informations from "./details/Informations";
 import Downloads from "./details/Downloads";
 import Episodes from "./details/Episodes";
@@ -95,7 +93,7 @@ const Details = () => {
 
   return (
     <>
-      <div className="container min-h-[95vh] pt-20 pb-5 flex flex-col gap-5 items-center justify-center">
+      <div className="px-3 lg:px-0 lg:container min-h-[95vh] pt-16 pb-5 flex flex-col gap-5 items-center justify-center">
         {/* LOADING */}
         {isLoading && (
           <div className="relative">
@@ -110,7 +108,7 @@ const Details = () => {
           <span
             className="w-full flex flex-col gap-5 items-center justify-center pt-5"
             key={index}>
-            <div className="w-3/4 bg-gray-900 rounded-lg">
+            <div className="lg:w-3/4 bg-gray-900 rounded-lg">
               <div className="py-5 ps-5">
                 <h1 className="font-bold text-xl">{anime.Judul}</h1>
                 <small>({anime.Japanese})</small>
@@ -126,7 +124,7 @@ const Details = () => {
                   }}></Card>
 
                 {/* INFORMARION */}
-                <span className="flex flex-col gap-2">
+                <span className="flex gap-2">
                   <Informations anime={anime} />
                 </span>
                 {/* END INFORMARION */}
@@ -137,7 +135,7 @@ const Details = () => {
                 {anime.sinopsis.length > 0 && (
                   <>
                     <strong>Sinopsis</strong>&nbsp;&nbsp;&nbsp;&nbsp;: <br />
-                    <span className="">{anime.sinopsis}</span>
+                    <small>{anime.sinopsis}</small>
                   </>
                 )}
               </p>
@@ -145,7 +143,7 @@ const Details = () => {
             </div>
 
             {/* CHAPTERS */}
-            <div className="w-3/4">
+            <div className="w-full px-3 lg:w-3/4">
               <h2 className="text-lg font-bold">Episode &nbsp;:</h2>
               <Episodes
                 episodes={episodes}
@@ -160,13 +158,13 @@ const Details = () => {
 
         {/* PLAYER */}
         {!isLoading && (
-          <div className="w-[55rem] bg-gray-900 rounded-lg">
+          <div className="w-full lg:w-[55rem] bg-gray-900 rounded-lg">
             <span className=" py-5 px-5 items-center justify-between flex gap-5">
-              <h1 className="text-lg font-semibold">
+              <h1 className="text-sm lg:text-lg font-semibold">
                 {episodeSelected} : <small>{title}</small>
               </h1>
-              <span className="px-5 bg-gray-500 rounded-md">
-                <p className="font-semibold">360p</p>
+              <span className="px-5 py-1 bg-gray-500 rounded-md">
+                <p className="text-xs lg:text-sm font-semibold">360p</p>
               </span>
             </span>
 
@@ -181,7 +179,7 @@ const Details = () => {
                 <div className="flex justify-center items-center">
                   <iframe
                     src={isPlaying[0]?.link}
-                    className="w-full h-[30rem]"
+                    className="w-full h-[14rem] lg:h-[30rem]"
                     allowFullScreen
                     title="Video Player"></iframe>
                 </div>

@@ -5,17 +5,18 @@ import MainComponent from "@/components/MainComponent";
 
 const MainSection = ({ link, title, isLoading, animesData, length }) => {
   return (
-    <div className="bg-gray-900 rounded-lg py-5 px-5 ">
+    <div className="bg-gray-900 rounded-lg p-5">
       <span className="flex justify-between items-center pb-5">
         {isLoading ? (
-          <Skeleton className="w-[200px] h-[20px]"></Skeleton>
+          <Skeleton className="w-[100px] h-[10px] lg:w-[200px] lg:h-[20px]"></Skeleton>
         ) : (
           <>
-            <h1 className="font-bold text-xl">{title}</h1>
+            <h1 className="font-semibold lg:font-bold lg:text-xl">{title}</h1>
             <NavLink
               to={`/neko-stream/${link}`}
               className={`border-b-2 border-gray-700`}>
-              <small className="text-sm ">Tampilkan Lebih</small>
+              <small className="lg:hidden">Lebih Banyak</small>
+              <small className="hidden lg:flex">Tampilkan Lebih</small>
             </NavLink>
           </>
         )}
@@ -25,7 +26,6 @@ const MainSection = ({ link, title, isLoading, animesData, length }) => {
         isLoading={isLoading}
         length={length}
         animesData={animesData}
-        grid="grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5"
       />
     </div>
   );

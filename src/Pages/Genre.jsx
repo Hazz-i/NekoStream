@@ -62,16 +62,16 @@ const Genre = () => {
           </div>
         </span>
       ) : (
-        <div className="min-h-[95vh] container pt-20 pb-5 flex flex-col gap-3 items-start justify-start">
+        <div className="min-h-[95vh] px-3 lg:px-0 lg:container pt-20 pb-5 flex flex-col gap-3 items-center justify-start">
           {/* GENRE LIST*/}
           <div className="w-full flex items-center justify-between gap-3">
-            <h1 className="font-bold text-xl">Anime Grene List</h1>
+            <h1 className="font-semibold lg:font-bold lg:text-xl">Anime Grene List</h1>
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button>{greneSelected}</Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-72 h-[50rem] overflow-y-scroll">
+              <DropdownMenuContent className="w-40 h-[30rem] lg:w-72 lg:h-[50rem] overflow-y-scroll">
                 <DropdownMenuLabel>Anime Grenes</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuRadioGroup

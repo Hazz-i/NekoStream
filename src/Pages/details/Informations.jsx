@@ -5,46 +5,46 @@ const Informations = ({ anime }) => {
     <Table>
       <TableBody>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Genre </strong>
           </TableCell>
-          <TableCell>{anime.Genre ? anime.Genre : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime.Genre ? anime.Genre.split(",").join(" ") : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Durasi </strong>
           </TableCell>
-          <TableCell>{anime.Durasi ? anime.Durasi : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime.Durasi ? anime.Durasi : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Produser </strong>
           </TableCell>
-          <TableCell>{anime.Produser ? anime.Produser : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime.Produser ? anime.Produser : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Status </strong>
           </TableCell>
-          <TableCell>{anime.Status ? anime.Status : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime.Status ? anime.Status : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Studio </strong>
           </TableCell>
-          <TableCell>{anime.Studio ? anime.Studio : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime.Studio ? anime.Studio : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
+          <TableCell>
             <strong>Tanggal Rilis </strong>
           </TableCell>
-          <TableCell>{anime["Tanggal Rilis"] ? anime["Tanggal Rilis"] : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime["Tanggal Rilis"] ? anime["Tanggal Rilis"] : "-"}</TableCell>
         </TableRow>
         <TableRow>
-          <TableCell className="font-sm">
-            <strong>Total Episode </strong>
+          <TableCell>
+            <strong className="text-nowrap">Total Episode </strong>
           </TableCell>
-          <TableCell>{anime["Total Episode"] ? anime["Total Episode"] : "-"}</TableCell>
+          <TableCell className="text-wrap">{anime["Total Episode"] ? anime["Total Episode"] : "-"}</TableCell>
         </TableRow>
       </TableBody>
     </Table>
