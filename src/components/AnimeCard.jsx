@@ -15,7 +15,7 @@ const AnimeCard = ({ anime }) => (
         style={{
           backgroundImage: `url(${anime.image_url})`,
         }}>
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3">
           <h1 className="font-semibold text-white text-sm mb-2">{anime.title}</h1>
           <ul className="text-white text-xs space-y-1">
             <li className="flex items-center">

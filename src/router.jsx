@@ -1,11 +1,11 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import App from "@/App";
 import Home from "@/Pages/Home";
-import Ongoing from "@/Pages/Ongoing";
-import Genre from "@/Pages/Genre";
+import Ongoing from "@/Pages/home/Ongoing";
+import Batch from "@/Pages/home/Batch";
 import Detail from "@/Pages/Detail";
 import Movie from "@/Pages/movie/Movie";
-import Batch from "@/Pages/Batch";
+import Genre from "@/Pages/Genre";
 import Search from "@/Pages/Search"; // Pastikan Anda membuat halaman ini
 
 const router = createBrowserRouter([

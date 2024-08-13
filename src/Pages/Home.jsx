@@ -1,13 +1,12 @@
 import Header from "@/components/layout/Header";
 
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import { useStateContext } from "@/context/contextProviders";
-import AnimeCard from "@/components/AnimeCard";
-import AnimeSkeleton from "@/components/AnimeSekeleton";
-import { Card } from "@/components/ui/card";
+
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
+import MainSection from "./home/MainSection";
+import AnimeListSection from "./home/AnimeListSection";
 
 const Home = () => {
   // CONTEXT PROVIDER
@@ -16,7 +15,9 @@ const Home = () => {
   const [ongoingAnimes, setOngoingAnimes] = useState([]);
   const [batchAnime, setBatchAnime] = useState([]);
   const [topAnimeLists, setTopAnmieLists] = useState([]);
+
   const [animeLists, setAnimeList] = useState([]);
+  const [animeListFilter, setAnimeListFilter] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
   const [search, setSearch] = useState("");
@@ -34,6 +35,10 @@ const Home = () => {
   }, [ongoingHome, topAnimeList, batchHome]);
 
   useEffect(() => {
+    setAnimeListFilter(topAnimeLists.slice(0, 10));
+  }, [topAnimeLists]);
+
+  useEffect(() => {
     const searchAnime = animeLists.filter((anime) => anime.title.toLowerCase().includes(search.toLowerCase()));
     setAnimeSearch(searchAnime);
   }, [search]);
@@ -41,82 +46,26 @@ const Home = () => {
   return (
     <>
       <Header />
-      <div className="container min-h-[95vh] pt-20 pb-5 flex justify-start items-start gap-5">
+      <div className="container min-h-[95vh] pt-20 pb-5 flex flex-col md:flex-row justify-start items-start gap-5">
         <span className="flex flex-col gap-5 w-[60rem]">
           {/* ONGOING */}
-          <div className="bg-gray-900 rounded-lg py-5 px-5">
-            <span className="flex justify-between items-center pb-5">
-              {isLoading ? (
-                <Skeleton className="w-[200px] h-[20px]"></Skeleton>
-              ) : (
-                <>
-                  <h1 className="font-bold text-xl">Anime Ongoing</h1>
-                  <NavLink
-                    to={"/neko-stream/ongoing-all"}
-                    className={`border-b-2 border-gray-700`}>
-                    <small className="text-sm ">Tampilkan Lebih</small>
-                  </NavLink>
-                </>
-              )}
-            </span>
-
-            <span className="flex gap-5 flex-wrap justify-center items-center">
-              {/* SEKELETON */}
-              <AnimeSkeleton
-                isLoading={isLoading}
-                length={10}
-              />
-              {/* END SEKELETON */}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5">
-                {ongoingAnimes?.map((anime, index) => (
-                  <span
-                    className="flex gap-4"
-                    key={index}>
-                    <AnimeCard anime={anime} />
-                  </span>
-                ))}
-              </div>
-            </span>
-          </div>
+          <MainSection
+            isLoading={isLoading}
+            animesData={ongoingAnimes}
+            length={10}
+            title="Anime Ongoing"
+            link="ongoing-all"
+          />
           {/* END ONGOING */}
 
           {/* BATCH */}
-          <span className="bg-gray-900 rounded-lg py-5 px-5">
-            <span className="flex justify-between items-center pb-5">
-              {isLoading ? (
-                <Skeleton className="w-[200px] h-[20px]"></Skeleton>
-              ) : (
-                <>
-                  <h1 className="font-bold text-xl">Anime Batch</h1>
-                  <NavLink
-                    to={"/neko-stream/batch-all"}
-                    className={`border-b-2 border-gray-700`}>
-                    <small className="text-sm ">Tampilkan Lebih</small>
-                  </NavLink>
-                </>
-              )}
-            </span>
-
-            <span className="flex gap-5 flex-wrap justify-center items-center">
-              {/* SEKELETON */}
-              <AnimeSkeleton
-                isLoading={isLoading}
-                length={5}
-              />
-              {/* END SEKELETON */}
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-5">
-                {batchAnime?.map((anime, index) => (
-                  <span
-                    className="flex gap-4"
-                    key={index}>
-                    <AnimeCard anime={anime} />
-                  </span>
-                ))}
-              </div>
-            </span>
-          </span>
+          <MainSection
+            isLoading={isLoading}
+            animesData={batchAnime}
+            length={5}
+            title="Anime Batch"
+            link="batch-all"
+          />
           {/* END BATCH */}
         </span>
 
@@ -172,60 +121,10 @@ const Home = () => {
                 animeSearch.length == 0 ? (
                   <small className="text-center font-semibold">Anime Tidak di Temukan</small>
                 ) : (
-                  animeSearch.map((list, index) => (
-                    <NavLink
-                      to={"https://myanimelist.net/topanime.php?type=bypopularity"}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(`https://myanimelist.net/topanime.php?type=bypopularity`, "_blank", "noopener noreferrer");
-                      }}
-                      className="flex gap-4 group w-full"
-                      key={index}>
-                      <div className="flex items-center justify-center">{list.ranking}</div>
-                      <Card
-                        className="w-[50px] h-[75px] transition-all duration-300 ease-in-out group-hover:scale-105 bg-cover bg-center"
-                        style={{
-                          backgroundImage: `url(${list.image_url})`,
-                        }}></Card>
-                      <div className="flex flex-col justify-between w-[calc(100%-140px)]">
-                        <h1 className="text-wrap font-semibold">{list.title}</h1>
-                        <span className="grid">
-                          <small>
-                            {list.data_range}&nbsp;&nbsp; ({list.description})
-                          </small>
-                          <small>Rate: {list.rating} ⭐</small>
-                        </span>
-                      </div>
-                    </NavLink>
-                  ))
+                  <AnimeListSection animesData={animeSearch} />
                 )
               ) : (
-                topAnimeLists.slice(0, 10).map((list, index) => (
-                  <NavLink
-                    to={"https://myanimelist.net/topanime.php?type=bypopularity"}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      window.open(`https://myanimelist.net/topanime.php?type=bypopularity`, "_blank", "noopener noreferrer");
-                    }}
-                    className="flex gap-4 group"
-                    key={index}>
-                    <div className="flex items-center justify-center">{list.ranking}</div>
-                    <Card
-                      className="w-[50px] h-[75px] transition-all duration-300 ease-in-out group-hover:scale-105 bg-cover bg-center"
-                      style={{
-                        backgroundImage: `url(${list.image_url})`,
-                      }}></Card>
-                    <div className="flex flex-col justify-between w-[calc(100%-140px)]">
-                      <h1 className="text-wrap font-semibold">{list.title}</h1>
-                      <span className="grid">
-                        <small>
-                          {list.data_range}&nbsp;&nbsp; ({list.description})
-                        </small>
-                        <small>Rate: {list.rating} ⭐</small>
-                      </span>
-                    </div>
-                  </NavLink>
-                ))
+                <AnimeListSection animesData={animeListFilter} />
               )}
             </span>
           </div>

@@ -7,6 +7,7 @@ import { Pagination, PaginationContent, PaginationItem, PaginationLink, Paginati
 
 import axiosClient from "@/axios";
 import { NavLink, useNavigate } from "react-router-dom";
+import SubComponent from "@/components/SubComponent";
 
 const Genre = () => {
   const { animeGenres } = useStateContext();
@@ -68,7 +69,7 @@ const Genre = () => {
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button>Pilih Grene</Button>
+                <Button>{greneSelected}</Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-72 h-[50rem] overflow-y-scroll">
                 <DropdownMenuLabel>Anime Grenes</DropdownMenuLabel>
@@ -92,63 +93,26 @@ const Genre = () => {
           {/* END GENRE LIST*/}
 
           {/* GENRE*/}
-          <span className="flex flex-col justify-center items-center bg-gray-900 rounded-lg gap-5 p-5 min-w-full min-h-[40vh]">
-            {!isListAnimeLoading && (
-              <span className="flex items-center justify-start w-full">
-                <h1 className="text-lg">
-                  Daftar Anime Grene "<span className="font-semibold">{greneSelected}</span>"
-                </h1>
-              </span>
-            )}
-            {isListAnimeLoading ? (
+          {isListAnimeLoading ? (
+            <span className="flex flex-col justify-center items-center bg-gray-900 rounded-lg gap-5 p-5 min-w-full min-h-[40vh]">
               <div className="flex flex-row gap-2">
                 <div className="w-4 h-4 rounded-full bg-gray-700 animate-bounce"></div>
                 <div className="w-4 h-4 rounded-full bg-gray-700 animate-bounce [animation-delay:-.3s]"></div>
                 <div className="w-4 h-4 rounded-full bg-gray-700 animate-bounce [animation-delay:-.5s]"></div>
               </div>
-            ) : (
-              <div className="grid lg:grid-cols-2 gap-5">
-                {listAnimes?.map((anime, index) => {
-                  return (
-                    <NavLink
-                      key={index}
-                      className="flex gap-2 group"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.open(`/neko-stream/detail/${anime.link.replace("https://otakudesu.cloud/anime/", "").replace("/", "")}/Episode 1`, "_blank", "noopener noreferrer");
-                      }}>
-                      <Card
-                        className="w-[145px] h-[200px] transition-all duration-300 ease-in-out group-hover:scale-105 bg-cover bg-center"
-                        style={{
-                          backgroundImage: `url(${anime.img_url})`,
-                        }}></Card>
-                      <div className="flex flex-col justify-between items-start py-1 text-wrap max-w-[25rem]">
-                        <span className="grid">
-                          <h1 className="font-semibold">{anime.title}</h1>
-                          <small className="font-thin">
-                            ({anime.anime_date} - {anime.epsd})
-                          </small>
-                        </span>
-                        <p className="grid">
-                          <small className="text-sm">
-                            <b>Studio</b> : {anime.studio}
-                          </small>
-                          <small className="text-sm">
-                            <b>Genres</b> : {anime.genre}
-                          </small>
-                        </p>
-                      </div>
-                    </NavLink>
-                  );
-                })}
-              </div>
-            )}
-          </span>
+            </span>
+          ) : (
+            <SubComponent
+              animesData={listAnimes}
+              subTitle="Genres"
+              subTitle1="Studio"
+              subTitle2="Info"
+            />
+          )}
           {/* END GENRE*/}
           {!isListAnimeLoading && (
             <Pagination>
               <PaginationContent>
-                {/* Handling the 'Berikutnya »' button */}
                 {pages
                   .filter((animePage) => animePage.page.toLowerCase().includes("sebelumnya"))
                   .map((_, index) => (
