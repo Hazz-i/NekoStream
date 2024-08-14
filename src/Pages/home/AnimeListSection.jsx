@@ -12,7 +12,7 @@ const AnimeListSection = ({ animesData }) => {
             e.preventDefault();
             window.open(`https://myanimelist.net/topanime.php?type=bypopularity`, "_blank", "noopener noreferrer");
           }}
-          className="flex gap-4 group w-full"
+          className="flex gap-4 group"
           key={index}>
           <div className="flex items-center justify-center">{list.ranking}</div>
           <Card
@@ -21,7 +21,7 @@ const AnimeListSection = ({ animesData }) => {
               backgroundImage: `url(${list.image_url})`,
             }}></Card>
           <div className="flex flex-col justify-between w-[calc(100%-140px)]">
-            <h1 className="text-wrap font-semibold">{list.title}</h1>
+            <h1 className="text-wrap font-semibold text-sm">{list.title}</h1>
             <span className="grid">
               <small>
                 {list.data_range}&nbsp;&nbsp; ({list.description})

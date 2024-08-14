@@ -55,14 +55,14 @@ const Genre = () => {
   return (
     <>
       {isLoading ? (
-        <span className="flex items-center justify-center h-[95vh]">
+        <span className="flex items-center justify-center h-[94vh] lg:h-[95vh]">
           <div className="relative">
             <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-400"></div>
             <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-gray-700 animate-spin"></div>
           </div>
         </span>
       ) : (
-        <div className="min-h-[95vh] px-3 lg:px-0 lg:container pt-20 pb-5 flex flex-col gap-3 items-center justify-start">
+        <div className=" px-3 lg:px-0 lg:container pt-20 pb-5 flex flex-col gap-3 items-center justify-start">
           {/* GENRE LIST*/}
           <div className="w-full flex items-center justify-between gap-3">
             <h1 className="font-semibold lg:font-bold lg:text-xl">Anime Grene List</h1>
@@ -94,7 +94,7 @@ const Genre = () => {
 
           {/* GENRE*/}
           {isListAnimeLoading ? (
-            <span className="flex flex-col justify-center items-center bg-gray-900 rounded-lg gap-5 p-5 min-w-full min-h-[40vh]">
+            <span className="flex flex-col justify-center items-center bg-gray-900 rounded-lg gap-5 p-5 min-w-full min-h-[74vh] lg:min-h-[80vh]">
               <div className="flex flex-row gap-2">
                 <div className="w-4 h-4 rounded-full bg-gray-700 animate-bounce"></div>
                 <div className="w-4 h-4 rounded-full bg-gray-700 animate-bounce [animation-delay:-.3s]"></div>

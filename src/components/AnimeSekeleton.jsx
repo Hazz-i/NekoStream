@@ -31,7 +31,7 @@ const AnimeSkeleton = ({ isLoading, length }) => {
         key={index}
         className="relative group">
         {/* CARD */}
-        <Skeleton className="w-[145px] h-[200px]" />
+        <Skeleton className="w-[130px] h-[175px] lg:w-[145px] lg:h-[200px]" />
         {/* END CARD */}
       </div>
     ))

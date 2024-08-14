@@ -84,7 +84,7 @@ const Home = () => {
         {/* END SEARCH */}
 
         {/* TOP ANIME LIST */}
-        <div className="w-[24.5rem] lg:w-[25rem] flex flex-col">
+        <div className="w-full lg:w-[25rem] flex flex-col">
           {!isLoading ? (
             <span className="flex justify-between items-center py-5">
               <h1 className="font-bold text-xl">Top Anime List</h1>
@@ -99,7 +99,7 @@ const Home = () => {
 
           <span className="grid grid-cols-1 gap-5 py-5 px-5 bg-gray-900 rounded-lg">
             {isLoading && (
-              <div className="flex gap-4 min-w-[20rem]">
+              <div className="flex gap-4">
                 <div className="flex items-center justify-center">
                   <Skeleton className={"h-4 w-2"}></Skeleton>
                 </div>
