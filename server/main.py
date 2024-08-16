@@ -29,7 +29,7 @@ CORS = CORS(app, origins="*")
 # )
 
 
-@app.route('/neko-stream/home', methods=['GET'])
+@app.route('/api/neko-stream/home', methods=['GET'])
 # @limiter.limit("10 per menit")  # Batasi rute spesifik ini
 def home():
     try:
@@ -56,7 +56,7 @@ def home():
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
-@app.route('/neko-stream/genres', methods=['GET'])
+@app.route('/api/neko-stream/genres', methods=['GET'])
 def genres():
     try:
         genres = "https://otakudesu.cloud/genre-list/"
@@ -72,7 +72,7 @@ def genres():
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
     
-@app.route('/neko-stream/genres/<genre>/<page>', methods=['GET'])
+@app.route('/api/neko-stream/genres/<genre>/<page>', methods=['GET'])
 def genres_data(genre, page):
     try:
         sub_genres = f'https://otakudesu.cloud/genres/{genre}/page/{page}/'
@@ -94,7 +94,7 @@ def genres_data(genre, page):
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
     
 
-@app.route('/neko-stream/ongoing-all', methods=['GET'])
+@app.route('/api/neko-stream/ongoing-all', methods=['GET'])
 def ongoing():
     try:
         page = 1
@@ -122,7 +122,7 @@ def ongoing():
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
     
-@app.route('/neko-stream/batch-all', methods=['GET'])
+@app.route('/api/neko-stream/batch-all', methods=['GET'])
 def batch():
     try:
         page = 1
@@ -150,7 +150,7 @@ def batch():
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
-@app.route('/neko-stream/<anime>/details', methods=['GET'])
+@app.route('/api/neko-stream/<anime>/details', methods=['GET'])
 def details(anime):
     try:
         url = f"https://otakudesu.cloud/anime/{anime}/"
@@ -169,7 +169,7 @@ def details(anime):
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
     
 
-@app.route('/neko-stream/<anime>/<episode>', methods=['GET'])
+@app.route('/api/neko-stream/<anime>/<episode>', methods=['GET'])
 def players(anime, episode):
     try:
         # Validate parameters
@@ -196,7 +196,7 @@ def players(anime, episode):
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
     
-@app.route('/neko-stream/<anime>/<episode>/downloads', methods=['GET'])
+@app.route('/api/neko-stream/<anime>/<episode>/downloads', methods=['GET'])
 def downloads(anime, episode):
     try:
         if not anime or not episode:
@@ -217,7 +217,7 @@ def downloads(anime, episode):
         logging.error(f"An error occurred: {e}")
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
-@app.route('/neko-stream/search=<anime>', methods=['GET'])
+@app.route('/api/neko-stream/search=<anime>', methods=['GET'])
 def search(anime):
     try:
         animeSearch = anime.replace(" ", "+")

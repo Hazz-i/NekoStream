@@ -24,7 +24,7 @@ const SubComponent = ({ animesData, subTitle, subTitle1, subTitle2 }) => {
                   <small className="font-semibold text-white">{anime.title.split(" ").slice(0, 5).join(" ")}</small>
                 </div>
               </Card>
-              <span className="flex items-start justify-end flex-col py-1 text-wrap">
+              <span className="flex items-start justify-end lg:justify-between flex-col py-1 text-wrap">
                 <span className="hidden lg:flex font-semibold">
                   <h1>
                     {anime.title}
