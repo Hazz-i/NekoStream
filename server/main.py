@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-# from flask_limiter import Limiter
-# from flask_limiter.util import get_remote_address
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 import logging
 import os
 
@@ -22,15 +22,15 @@ load_dotenv()
 app = Flask(__name__)
 CORS = CORS(app, origins="*")
 
-# limiter = Limiter(
-#     get_remote_address,
-#     app=app,
-#     default_limits=["200 per hari", "50 per jam"]
-# )
+# Inisialisasi Flask-Limiter
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["10 per second"], 
+)
 
 
 @app.route('/api/neko-stream/home', methods=['GET'])
-# @limiter.limit("10 per menit")  # Batasi rute spesifik ini
 def home():
     try:
         # Memanggil fungsi untuk mendapatkan data anime
@@ -240,5 +240,4 @@ def search(anime):
         return jsonify({'success': "fail", 'message': "An error occurred.", 'error': str(e)}), 500
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))  # Use the port from .env, or default to 5000
-    app.run(debug=True, port=port)
+    app.run(host=os.getenv('FLASK_RUN_HOST'), port=os.gotenv('FLASK_RUN_PORT'))
