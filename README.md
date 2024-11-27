@@ -11,7 +11,7 @@ library Server:
 
 - Flask
 - FlaskCors
-- dotEnv
+- dotEnv #env for flask server
 
 library Scrapping:
 
@@ -61,4 +61,6 @@ yarn dev
 
 ## NOTE
 
-<strong>I made this website just for fun and has no specific purpose.</strong><br/>Before running the BE or FE server, make user all library and your .env or venv have done to setup first. enjoy it ^-^.
+<strong>I made this website just for fun and has no specific purpose.</strong><br/>Before running
+the BE or FE server, make user all library and your .env or venv have done to setup first. enjoy it
+^-^.
